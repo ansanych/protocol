@@ -5,10 +5,37 @@ package auth;
 option go_package = "github.com/ansanych/protocol";
 
 service Auth {
-  rpc Login (LoginRequest) returns (LoginReply) {}
   rpc Register (RegisterRequest) returns (BoolReply) {}
+  rpc Login (LoginRequest) returns (LoginReply) {}
   rpc Refresh (RefreshRequest) returns (LoginReply) {}
-  rpc Access (AccessRequest) returns (BoolReply) {}
+}
+
+message BoolReply {
+  bool status = 1;
+}
+
+message RegisterRequest {
+  string company = 1;
+  string name = 2;
+  string email = 3;
+  string phone = 4;
+  string password = 5;
+}
+
+message LoginRequest {
+  string email = 1;
+  string phone = 2;
+  string password = 3;
+}
+
+message Company {
+  int64 ID = 1;
+  string name = 2;
+}
+
+message Role {
+  int64 ID = 1;
+  string title = 2;
 }
 
 message User {
@@ -18,11 +45,8 @@ message User {
   bool verifyEmail = 4;
   string phone = 5;
   bool verifyPhone = 6;
-}
-
-message LoginRequest {
-  string email = 1;
-  string password = 2;
+  Company company = 7;
+  repeated Role roles = 8;
 }
 
 message LoginReply {
@@ -31,21 +55,6 @@ message LoginReply {
   string refreshToken = 3;
 }
 
-message RegisterRequest {
-  string name = 1;
-  string email = 2;
-  string phone = 3;
-  string password = 4;
-}
-
 message RefreshRequest {
   string token = 1;
-}
-
-message AccessRequest {
-  int64 userID = 1;
-}
-
-message BoolReply {
-  bool status = 1;
 }
