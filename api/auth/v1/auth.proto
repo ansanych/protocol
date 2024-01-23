@@ -36,6 +36,7 @@ message Company {
 message Role {
   int64 ID = 1;
   string title = 2;
+  string code = 3;
 }
 
 message User {
