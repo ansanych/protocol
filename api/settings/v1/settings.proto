@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package settings;
+
+option go_package = "github.com/ansanych/protocol";
+
+service Settings {
+  rpc GetTaxes (AuthRequest) returns (TaxesReply) {}
+  rpc SetCompanyTax (SetCompanyTaxRequest) returns (BoolReply) {}
+  rpc GetCompanyTaxes (GetCompanyTaxesRequest) returns (CompanyTaxesReply) {}
+  rpc GetCompanyTax (GetCompanyTaxRequest) returns (CompanyTax) {}
+}
+
+message Role {
+  int64 ID = 1;
+  string title = 2;
+  string code = 3;
+}
+
+message AuthRequest {
+  bool tokenValidation = 1;
+  int64 userID = 2;
+  int64 companyID = 3;
+  repeated Role roles = 4;
+}
+
+message Tax {
+  int32 ID = 1;
+  string title = 2;
+  string description = 3;
+  int32 percent = 4;
+}
+
+message TaxesReply {
+  repeated Tax taxes = 1;
+}
+
+message BoolReply {
+  bool status = 1;
+}
+
+message SetCompanyTaxRequest {
+  AuthRequest auth = 1;
+  int32 taxID = 2;
+  int32 year = 3;
+}
+
+message CompanyTax {
+  Tax tax = 1;
+  int32 year = 2;
+}
+
+message GetCompanyTaxesRequest {
+  AuthRequest auth = 1;
+}
+
+message CompanyTaxesReply {
+  repeated CompanyTax taxes = 1;
+}
+
+message GetCompanyTaxRequest {
+  AuthRequest auth = 1;
+  int32 year = 2;
+}
