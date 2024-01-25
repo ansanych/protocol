@@ -10,10 +10,11 @@ service Settings {
   rpc GetCompanyTaxes (AuthRequest) returns (CompanyTaxesReply) {}
   rpc GetCompanyTax (GetCompanyTaxRequest) returns (CompanyTax) {}
   rpc GetBrands (GetBrandsRequest) returns (BrandsReply) {}
+  rpc GetBrand (GetBrandRequest) returns (Brand) {}
   rpc SearchBrand (SearchBrandRequest) returns (BrandsReply) {}
-  rpc SetBrand (SetBrandRequest) returns (BoolReply) {}
+  rpc SetBrand (SetBrandRequest) returns (InsertReply) {}
   rpc GetCompanyBrands (GetCompanyBrandsRequest) returns (BrandsReply) {}
-  rpc GetCompanyBrand (GetCompanyBrandRequest) returns (Brand) {}
+  rpc GetCompanyBrand (GetBrandRequest) returns (Brand) {}
 }
 
 message Pagination {
@@ -83,6 +84,12 @@ message GetBrandsRequest {
   int64 page = 2;
 }
 
+message GetBrandRequest {
+  AuthRequest auth = 1;
+  int64 brandID = 2;
+  string brandName = 3;
+}
+
 message BrandsReply {
  repeated Brand brands = 1;
  Pagination pagination = 2;
@@ -103,7 +110,6 @@ message GetCompanyBrandsRequest {
   int64 page = 2;
 }
 
-message GetCompanyBrandRequest {
-  AuthRequest auth = 1;
-  int64 brandID = 2;
+message InsertReply {
+  int64 ID = 1;
 }

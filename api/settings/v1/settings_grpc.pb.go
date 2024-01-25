@@ -24,6 +24,7 @@ const (
 	Settings_GetCompanyTaxes_FullMethodName  = "/settings.Settings/GetCompanyTaxes"
 	Settings_GetCompanyTax_FullMethodName    = "/settings.Settings/GetCompanyTax"
 	Settings_GetBrands_FullMethodName        = "/settings.Settings/GetBrands"
+	Settings_GetBrand_FullMethodName         = "/settings.Settings/GetBrand"
 	Settings_SearchBrand_FullMethodName      = "/settings.Settings/SearchBrand"
 	Settings_SetBrand_FullMethodName         = "/settings.Settings/SetBrand"
 	Settings_GetCompanyBrands_FullMethodName = "/settings.Settings/GetCompanyBrands"
@@ -39,10 +40,11 @@ type SettingsClient interface {
 	GetCompanyTaxes(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*CompanyTaxesReply, error)
 	GetCompanyTax(ctx context.Context, in *GetCompanyTaxRequest, opts ...grpc.CallOption) (*CompanyTax, error)
 	GetBrands(ctx context.Context, in *GetBrandsRequest, opts ...grpc.CallOption) (*BrandsReply, error)
+	GetBrand(ctx context.Context, in *GetBrandRequest, opts ...grpc.CallOption) (*Brand, error)
 	SearchBrand(ctx context.Context, in *SearchBrandRequest, opts ...grpc.CallOption) (*BrandsReply, error)
-	SetBrand(ctx context.Context, in *SetBrandRequest, opts ...grpc.CallOption) (*BoolReply, error)
+	SetBrand(ctx context.Context, in *SetBrandRequest, opts ...grpc.CallOption) (*InsertReply, error)
 	GetCompanyBrands(ctx context.Context, in *GetCompanyBrandsRequest, opts ...grpc.CallOption) (*BrandsReply, error)
-	GetCompanyBrand(ctx context.Context, in *GetCompanyBrandRequest, opts ...grpc.CallOption) (*Brand, error)
+	GetCompanyBrand(ctx context.Context, in *GetBrandRequest, opts ...grpc.CallOption) (*Brand, error)
 }
 
 type settingsClient struct {
@@ -98,6 +100,15 @@ func (c *settingsClient) GetBrands(ctx context.Context, in *GetBrandsRequest, op
 	return out, nil
 }
 
+func (c *settingsClient) GetBrand(ctx context.Context, in *GetBrandRequest, opts ...grpc.CallOption) (*Brand, error) {
+	out := new(Brand)
+	err := c.cc.Invoke(ctx, Settings_GetBrand_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *settingsClient) SearchBrand(ctx context.Context, in *SearchBrandRequest, opts ...grpc.CallOption) (*BrandsReply, error) {
 	out := new(BrandsReply)
 	err := c.cc.Invoke(ctx, Settings_SearchBrand_FullMethodName, in, out, opts...)
@@ -107,8 +118,8 @@ func (c *settingsClient) SearchBrand(ctx context.Context, in *SearchBrandRequest
 	return out, nil
 }
 
-func (c *settingsClient) SetBrand(ctx context.Context, in *SetBrandRequest, opts ...grpc.CallOption) (*BoolReply, error) {
-	out := new(BoolReply)
+func (c *settingsClient) SetBrand(ctx context.Context, in *SetBrandRequest, opts ...grpc.CallOption) (*InsertReply, error) {
+	out := new(InsertReply)
 	err := c.cc.Invoke(ctx, Settings_SetBrand_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -125,7 +136,7 @@ func (c *settingsClient) GetCompanyBrands(ctx context.Context, in *GetCompanyBra
 	return out, nil
 }
 
-func (c *settingsClient) GetCompanyBrand(ctx context.Context, in *GetCompanyBrandRequest, opts ...grpc.CallOption) (*Brand, error) {
+func (c *settingsClient) GetCompanyBrand(ctx context.Context, in *GetBrandRequest, opts ...grpc.CallOption) (*Brand, error) {
 	out := new(Brand)
 	err := c.cc.Invoke(ctx, Settings_GetCompanyBrand_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -143,10 +154,11 @@ type SettingsServer interface {
 	GetCompanyTaxes(context.Context, *AuthRequest) (*CompanyTaxesReply, error)
 	GetCompanyTax(context.Context, *GetCompanyTaxRequest) (*CompanyTax, error)
 	GetBrands(context.Context, *GetBrandsRequest) (*BrandsReply, error)
+	GetBrand(context.Context, *GetBrandRequest) (*Brand, error)
 	SearchBrand(context.Context, *SearchBrandRequest) (*BrandsReply, error)
-	SetBrand(context.Context, *SetBrandRequest) (*BoolReply, error)
+	SetBrand(context.Context, *SetBrandRequest) (*InsertReply, error)
 	GetCompanyBrands(context.Context, *GetCompanyBrandsRequest) (*BrandsReply, error)
-	GetCompanyBrand(context.Context, *GetCompanyBrandRequest) (*Brand, error)
+	GetCompanyBrand(context.Context, *GetBrandRequest) (*Brand, error)
 	mustEmbedUnimplementedSettingsServer()
 }
 
@@ -169,16 +181,19 @@ func (UnimplementedSettingsServer) GetCompanyTax(context.Context, *GetCompanyTax
 func (UnimplementedSettingsServer) GetBrands(context.Context, *GetBrandsRequest) (*BrandsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBrands not implemented")
 }
+func (UnimplementedSettingsServer) GetBrand(context.Context, *GetBrandRequest) (*Brand, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBrand not implemented")
+}
 func (UnimplementedSettingsServer) SearchBrand(context.Context, *SearchBrandRequest) (*BrandsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchBrand not implemented")
 }
-func (UnimplementedSettingsServer) SetBrand(context.Context, *SetBrandRequest) (*BoolReply, error) {
+func (UnimplementedSettingsServer) SetBrand(context.Context, *SetBrandRequest) (*InsertReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetBrand not implemented")
 }
 func (UnimplementedSettingsServer) GetCompanyBrands(context.Context, *GetCompanyBrandsRequest) (*BrandsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCompanyBrands not implemented")
 }
-func (UnimplementedSettingsServer) GetCompanyBrand(context.Context, *GetCompanyBrandRequest) (*Brand, error) {
+func (UnimplementedSettingsServer) GetCompanyBrand(context.Context, *GetBrandRequest) (*Brand, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCompanyBrand not implemented")
 }
 func (UnimplementedSettingsServer) mustEmbedUnimplementedSettingsServer() {}
@@ -284,6 +299,24 @@ func _Settings_GetBrands_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Settings_GetBrand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBrandRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).GetBrand(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_GetBrand_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).GetBrand(ctx, req.(*GetBrandRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Settings_SearchBrand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SearchBrandRequest)
 	if err := dec(in); err != nil {
@@ -339,7 +372,7 @@ func _Settings_GetCompanyBrands_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _Settings_GetCompanyBrand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetCompanyBrandRequest)
+	in := new(GetBrandRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -351,7 +384,7 @@ func _Settings_GetCompanyBrand_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: Settings_GetCompanyBrand_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SettingsServer).GetCompanyBrand(ctx, req.(*GetCompanyBrandRequest))
+		return srv.(SettingsServer).GetCompanyBrand(ctx, req.(*GetBrandRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -382,6 +415,10 @@ var Settings_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBrands",
 			Handler:    _Settings_GetBrands_Handler,
+		},
+		{
+			MethodName: "GetBrand",
+			Handler:    _Settings_GetBrand_Handler,
 		},
 		{
 			MethodName: "SearchBrand",
