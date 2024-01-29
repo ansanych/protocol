@@ -19,16 +19,24 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Settings_GetTaxes_FullMethodName         = "/settings.Settings/GetTaxes"
-	Settings_SetCompanyTax_FullMethodName    = "/settings.Settings/SetCompanyTax"
-	Settings_GetCompanyTaxes_FullMethodName  = "/settings.Settings/GetCompanyTaxes"
-	Settings_GetCompanyTax_FullMethodName    = "/settings.Settings/GetCompanyTax"
-	Settings_GetBrands_FullMethodName        = "/settings.Settings/GetBrands"
-	Settings_GetBrand_FullMethodName         = "/settings.Settings/GetBrand"
-	Settings_SearchBrand_FullMethodName      = "/settings.Settings/SearchBrand"
-	Settings_SetBrand_FullMethodName         = "/settings.Settings/SetBrand"
-	Settings_GetCompanyBrands_FullMethodName = "/settings.Settings/GetCompanyBrands"
-	Settings_GetCompanyBrand_FullMethodName  = "/settings.Settings/GetCompanyBrand"
+	Settings_GetTaxes_FullMethodName              = "/settings.Settings/GetTaxes"
+	Settings_SetCompanyTax_FullMethodName         = "/settings.Settings/SetCompanyTax"
+	Settings_GetCompanyTaxes_FullMethodName       = "/settings.Settings/GetCompanyTaxes"
+	Settings_GetCompanyTax_FullMethodName         = "/settings.Settings/GetCompanyTax"
+	Settings_GetBrands_FullMethodName             = "/settings.Settings/GetBrands"
+	Settings_GetBrand_FullMethodName              = "/settings.Settings/GetBrand"
+	Settings_SearchBrand_FullMethodName           = "/settings.Settings/SearchBrand"
+	Settings_SetBrand_FullMethodName              = "/settings.Settings/SetBrand"
+	Settings_GetCompanyBrands_FullMethodName      = "/settings.Settings/GetCompanyBrands"
+	Settings_GetCompanyBrand_FullMethodName       = "/settings.Settings/GetCompanyBrand"
+	Settings_GetMargin_FullMethodName             = "/settings.Settings/GetMargin"
+	Settings_GetMarginBrand_FullMethodName        = "/settings.Settings/GetMarginBrand"
+	Settings_SetMargin_FullMethodName             = "/settings.Settings/SetMargin"
+	Settings_SetMarginBrand_FullMethodName        = "/settings.Settings/SetMarginBrand"
+	Settings_UpdateMargin_FullMethodName          = "/settings.Settings/UpdateMargin"
+	Settings_GetMarginArchive_FullMethodName      = "/settings.Settings/GetMarginArchive"
+	Settings_GetMarginArchiveBrand_FullMethodName = "/settings.Settings/GetMarginArchiveBrand"
+	Settings_DeleteMargin_FullMethodName          = "/settings.Settings/DeleteMargin"
 )
 
 // SettingsClient is the client API for Settings service.
@@ -45,6 +53,14 @@ type SettingsClient interface {
 	SetBrand(ctx context.Context, in *SetBrandRequest, opts ...grpc.CallOption) (*InsertReply, error)
 	GetCompanyBrands(ctx context.Context, in *GetCompanyBrandsRequest, opts ...grpc.CallOption) (*BrandsReply, error)
 	GetCompanyBrand(ctx context.Context, in *GetBrandRequest, opts ...grpc.CallOption) (*Brand, error)
+	GetMargin(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*Margin, error)
+	GetMarginBrand(ctx context.Context, in *MarginBrandRequest, opts ...grpc.CallOption) (*Margin, error)
+	SetMargin(ctx context.Context, in *SetMarginRequest, opts ...grpc.CallOption) (*InsertReply, error)
+	SetMarginBrand(ctx context.Context, in *SetMarginRequest, opts ...grpc.CallOption) (*InsertReply, error)
+	UpdateMargin(ctx context.Context, in *UpdateMarginRequest, opts ...grpc.CallOption) (*BoolReply, error)
+	GetMarginArchive(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*Margins, error)
+	GetMarginArchiveBrand(ctx context.Context, in *MarginBrandRequest, opts ...grpc.CallOption) (*Margins, error)
+	DeleteMargin(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*BoolReply, error)
 }
 
 type settingsClient struct {
@@ -145,6 +161,78 @@ func (c *settingsClient) GetCompanyBrand(ctx context.Context, in *GetBrandReques
 	return out, nil
 }
 
+func (c *settingsClient) GetMargin(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*Margin, error) {
+	out := new(Margin)
+	err := c.cc.Invoke(ctx, Settings_GetMargin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *settingsClient) GetMarginBrand(ctx context.Context, in *MarginBrandRequest, opts ...grpc.CallOption) (*Margin, error) {
+	out := new(Margin)
+	err := c.cc.Invoke(ctx, Settings_GetMarginBrand_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *settingsClient) SetMargin(ctx context.Context, in *SetMarginRequest, opts ...grpc.CallOption) (*InsertReply, error) {
+	out := new(InsertReply)
+	err := c.cc.Invoke(ctx, Settings_SetMargin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *settingsClient) SetMarginBrand(ctx context.Context, in *SetMarginRequest, opts ...grpc.CallOption) (*InsertReply, error) {
+	out := new(InsertReply)
+	err := c.cc.Invoke(ctx, Settings_SetMarginBrand_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *settingsClient) UpdateMargin(ctx context.Context, in *UpdateMarginRequest, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, Settings_UpdateMargin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *settingsClient) GetMarginArchive(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*Margins, error) {
+	out := new(Margins)
+	err := c.cc.Invoke(ctx, Settings_GetMarginArchive_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *settingsClient) GetMarginArchiveBrand(ctx context.Context, in *MarginBrandRequest, opts ...grpc.CallOption) (*Margins, error) {
+	out := new(Margins)
+	err := c.cc.Invoke(ctx, Settings_GetMarginArchiveBrand_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *settingsClient) DeleteMargin(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, Settings_DeleteMargin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SettingsServer is the server API for Settings service.
 // All implementations must embed UnimplementedSettingsServer
 // for forward compatibility
@@ -159,6 +247,14 @@ type SettingsServer interface {
 	SetBrand(context.Context, *SetBrandRequest) (*InsertReply, error)
 	GetCompanyBrands(context.Context, *GetCompanyBrandsRequest) (*BrandsReply, error)
 	GetCompanyBrand(context.Context, *GetBrandRequest) (*Brand, error)
+	GetMargin(context.Context, *AuthRequest) (*Margin, error)
+	GetMarginBrand(context.Context, *MarginBrandRequest) (*Margin, error)
+	SetMargin(context.Context, *SetMarginRequest) (*InsertReply, error)
+	SetMarginBrand(context.Context, *SetMarginRequest) (*InsertReply, error)
+	UpdateMargin(context.Context, *UpdateMarginRequest) (*BoolReply, error)
+	GetMarginArchive(context.Context, *AuthRequest) (*Margins, error)
+	GetMarginArchiveBrand(context.Context, *MarginBrandRequest) (*Margins, error)
+	DeleteMargin(context.Context, *DeleteRequest) (*BoolReply, error)
 	mustEmbedUnimplementedSettingsServer()
 }
 
@@ -195,6 +291,30 @@ func (UnimplementedSettingsServer) GetCompanyBrands(context.Context, *GetCompany
 }
 func (UnimplementedSettingsServer) GetCompanyBrand(context.Context, *GetBrandRequest) (*Brand, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCompanyBrand not implemented")
+}
+func (UnimplementedSettingsServer) GetMargin(context.Context, *AuthRequest) (*Margin, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMargin not implemented")
+}
+func (UnimplementedSettingsServer) GetMarginBrand(context.Context, *MarginBrandRequest) (*Margin, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMarginBrand not implemented")
+}
+func (UnimplementedSettingsServer) SetMargin(context.Context, *SetMarginRequest) (*InsertReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetMargin not implemented")
+}
+func (UnimplementedSettingsServer) SetMarginBrand(context.Context, *SetMarginRequest) (*InsertReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetMarginBrand not implemented")
+}
+func (UnimplementedSettingsServer) UpdateMargin(context.Context, *UpdateMarginRequest) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMargin not implemented")
+}
+func (UnimplementedSettingsServer) GetMarginArchive(context.Context, *AuthRequest) (*Margins, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMarginArchive not implemented")
+}
+func (UnimplementedSettingsServer) GetMarginArchiveBrand(context.Context, *MarginBrandRequest) (*Margins, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMarginArchiveBrand not implemented")
+}
+func (UnimplementedSettingsServer) DeleteMargin(context.Context, *DeleteRequest) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteMargin not implemented")
 }
 func (UnimplementedSettingsServer) mustEmbedUnimplementedSettingsServer() {}
 
@@ -389,6 +509,150 @@ func _Settings_GetCompanyBrand_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Settings_GetMargin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).GetMargin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_GetMargin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).GetMargin(ctx, req.(*AuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Settings_GetMarginBrand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MarginBrandRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).GetMarginBrand(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_GetMarginBrand_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).GetMarginBrand(ctx, req.(*MarginBrandRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Settings_SetMargin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetMarginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).SetMargin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_SetMargin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).SetMargin(ctx, req.(*SetMarginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Settings_SetMarginBrand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetMarginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).SetMarginBrand(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_SetMarginBrand_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).SetMarginBrand(ctx, req.(*SetMarginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Settings_UpdateMargin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMarginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).UpdateMargin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_UpdateMargin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).UpdateMargin(ctx, req.(*UpdateMarginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Settings_GetMarginArchive_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).GetMarginArchive(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_GetMarginArchive_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).GetMarginArchive(ctx, req.(*AuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Settings_GetMarginArchiveBrand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MarginBrandRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).GetMarginArchiveBrand(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_GetMarginArchiveBrand_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).GetMarginArchiveBrand(ctx, req.(*MarginBrandRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Settings_DeleteMargin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).DeleteMargin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_DeleteMargin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).DeleteMargin(ctx, req.(*DeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Settings_ServiceDesc is the grpc.ServiceDesc for Settings service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -435,6 +699,38 @@ var Settings_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCompanyBrand",
 			Handler:    _Settings_GetCompanyBrand_Handler,
+		},
+		{
+			MethodName: "GetMargin",
+			Handler:    _Settings_GetMargin_Handler,
+		},
+		{
+			MethodName: "GetMarginBrand",
+			Handler:    _Settings_GetMarginBrand_Handler,
+		},
+		{
+			MethodName: "SetMargin",
+			Handler:    _Settings_SetMargin_Handler,
+		},
+		{
+			MethodName: "SetMarginBrand",
+			Handler:    _Settings_SetMarginBrand_Handler,
+		},
+		{
+			MethodName: "UpdateMargin",
+			Handler:    _Settings_UpdateMargin_Handler,
+		},
+		{
+			MethodName: "GetMarginArchive",
+			Handler:    _Settings_GetMarginArchive_Handler,
+		},
+		{
+			MethodName: "GetMarginArchiveBrand",
+			Handler:    _Settings_GetMarginArchiveBrand_Handler,
+		},
+		{
+			MethodName: "DeleteMargin",
+			Handler:    _Settings_DeleteMargin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

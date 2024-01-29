@@ -15,6 +15,14 @@ service Settings {
   rpc SetBrand (SetBrandRequest) returns (InsertReply) {}
   rpc GetCompanyBrands (GetCompanyBrandsRequest) returns (BrandsReply) {}
   rpc GetCompanyBrand (GetBrandRequest) returns (Brand) {}
+  rpc GetMargin (AuthRequest) returns (Margin) {}
+  rpc GetMarginBrand (MarginBrandRequest) returns (Margin) {}
+  rpc SetMargin(SetMarginRequest) returns (InsertReply) {}
+  rpc SetMarginBrand(SetMarginRequest) returns (InsertReply) {}
+  rpc UpdateMargin(UpdateMarginRequest) returns (BoolReply) {}
+  rpc GetMarginArchive (AuthRequest) returns (Margins) {}
+  rpc GetMarginArchiveBrand (MarginBrandRequest) returns (Margins) {}
+  rpc DeleteMargin (DeleteRequest) returns (BoolReply) {}
 }
 
 message Pagination {
@@ -112,4 +120,42 @@ message GetCompanyBrandsRequest {
 
 message InsertReply {
   int64 ID = 1;
+}
+
+message Margin {
+  int64 ID = 1;
+  float min = 2;
+  float mid = 3;
+  float max = 4;
+  string created = 5;
+}
+
+message Margins {
+  repeated Margin margins = 1;
+}
+
+message MarginBrandRequest {
+  AuthRequest auth = 1;
+  int64 brandID = 2;
+}
+
+message SetMarginRequest {
+  AuthRequest auth = 1;
+  int64 brandID = 2;
+  float min = 3;
+  float mid = 4;
+  float max = 5;
+}
+
+message UpdateMarginRequest {
+  AuthRequest auth = 1;
+  int64 marginID = 2;
+  float min = 3;
+  float mid = 4;
+  float max = 5;
+}
+
+message DeleteRequest {
+  AuthRequest auth = 1;
+  int64 marginID = 2;
 }
