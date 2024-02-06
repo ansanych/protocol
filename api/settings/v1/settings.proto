@@ -181,6 +181,7 @@ message CompanyShop {
   int64 ID = 1;
   Shop shop = 2;
   bool Active = 3;
+  bool Auth = 4;
 }
 
 message CompanyShopsReply {
