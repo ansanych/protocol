@@ -37,6 +37,10 @@ const (
 	Settings_GetMarginArchive_FullMethodName      = "/settings.Settings/GetMarginArchive"
 	Settings_GetMarginArchiveBrand_FullMethodName = "/settings.Settings/GetMarginArchiveBrand"
 	Settings_DeleteMargin_FullMethodName          = "/settings.Settings/DeleteMargin"
+	Settings_GetShops_FullMethodName              = "/settings.Settings/GetShops"
+	Settings_GetCompanyShops_FullMethodName       = "/settings.Settings/GetCompanyShops"
+	Settings_SetCompanyShop_FullMethodName        = "/settings.Settings/SetCompanyShop"
+	Settings_ActivateCompanyShop_FullMethodName   = "/settings.Settings/ActivateCompanyShop"
 )
 
 // SettingsClient is the client API for Settings service.
@@ -61,6 +65,10 @@ type SettingsClient interface {
 	GetMarginArchive(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*Margins, error)
 	GetMarginArchiveBrand(ctx context.Context, in *MarginBrandRequest, opts ...grpc.CallOption) (*Margins, error)
 	DeleteMargin(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*BoolReply, error)
+	GetShops(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*ShopsReply, error)
+	GetCompanyShops(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*CompanyShopsReply, error)
+	SetCompanyShop(ctx context.Context, in *SetCompanyShopRequest, opts ...grpc.CallOption) (*BoolReply, error)
+	ActivateCompanyShop(ctx context.Context, in *ActivateCompanyShopRequest, opts ...grpc.CallOption) (*BoolReply, error)
 }
 
 type settingsClient struct {
@@ -233,6 +241,42 @@ func (c *settingsClient) DeleteMargin(ctx context.Context, in *DeleteRequest, op
 	return out, nil
 }
 
+func (c *settingsClient) GetShops(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*ShopsReply, error) {
+	out := new(ShopsReply)
+	err := c.cc.Invoke(ctx, Settings_GetShops_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *settingsClient) GetCompanyShops(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*CompanyShopsReply, error) {
+	out := new(CompanyShopsReply)
+	err := c.cc.Invoke(ctx, Settings_GetCompanyShops_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *settingsClient) SetCompanyShop(ctx context.Context, in *SetCompanyShopRequest, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, Settings_SetCompanyShop_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *settingsClient) ActivateCompanyShop(ctx context.Context, in *ActivateCompanyShopRequest, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, Settings_ActivateCompanyShop_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SettingsServer is the server API for Settings service.
 // All implementations must embed UnimplementedSettingsServer
 // for forward compatibility
@@ -255,6 +299,10 @@ type SettingsServer interface {
 	GetMarginArchive(context.Context, *AuthRequest) (*Margins, error)
 	GetMarginArchiveBrand(context.Context, *MarginBrandRequest) (*Margins, error)
 	DeleteMargin(context.Context, *DeleteRequest) (*BoolReply, error)
+	GetShops(context.Context, *AuthRequest) (*ShopsReply, error)
+	GetCompanyShops(context.Context, *AuthRequest) (*CompanyShopsReply, error)
+	SetCompanyShop(context.Context, *SetCompanyShopRequest) (*BoolReply, error)
+	ActivateCompanyShop(context.Context, *ActivateCompanyShopRequest) (*BoolReply, error)
 	mustEmbedUnimplementedSettingsServer()
 }
 
@@ -315,6 +363,18 @@ func (UnimplementedSettingsServer) GetMarginArchiveBrand(context.Context, *Margi
 }
 func (UnimplementedSettingsServer) DeleteMargin(context.Context, *DeleteRequest) (*BoolReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMargin not implemented")
+}
+func (UnimplementedSettingsServer) GetShops(context.Context, *AuthRequest) (*ShopsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetShops not implemented")
+}
+func (UnimplementedSettingsServer) GetCompanyShops(context.Context, *AuthRequest) (*CompanyShopsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCompanyShops not implemented")
+}
+func (UnimplementedSettingsServer) SetCompanyShop(context.Context, *SetCompanyShopRequest) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetCompanyShop not implemented")
+}
+func (UnimplementedSettingsServer) ActivateCompanyShop(context.Context, *ActivateCompanyShopRequest) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ActivateCompanyShop not implemented")
 }
 func (UnimplementedSettingsServer) mustEmbedUnimplementedSettingsServer() {}
 
@@ -653,6 +713,78 @@ func _Settings_DeleteMargin_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Settings_GetShops_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).GetShops(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_GetShops_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).GetShops(ctx, req.(*AuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Settings_GetCompanyShops_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).GetCompanyShops(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_GetCompanyShops_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).GetCompanyShops(ctx, req.(*AuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Settings_SetCompanyShop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetCompanyShopRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).SetCompanyShop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_SetCompanyShop_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).SetCompanyShop(ctx, req.(*SetCompanyShopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Settings_ActivateCompanyShop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivateCompanyShopRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SettingsServer).ActivateCompanyShop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Settings_ActivateCompanyShop_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SettingsServer).ActivateCompanyShop(ctx, req.(*ActivateCompanyShopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Settings_ServiceDesc is the grpc.ServiceDesc for Settings service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -731,6 +863,22 @@ var Settings_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteMargin",
 			Handler:    _Settings_DeleteMargin_Handler,
+		},
+		{
+			MethodName: "GetShops",
+			Handler:    _Settings_GetShops_Handler,
+		},
+		{
+			MethodName: "GetCompanyShops",
+			Handler:    _Settings_GetCompanyShops_Handler,
+		},
+		{
+			MethodName: "SetCompanyShop",
+			Handler:    _Settings_SetCompanyShop_Handler,
+		},
+		{
+			MethodName: "ActivateCompanyShop",
+			Handler:    _Settings_ActivateCompanyShop_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
