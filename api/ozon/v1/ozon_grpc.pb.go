@@ -22,6 +22,7 @@ const (
 	Ozon_SetOzonAuth_FullMethodName   = "/ozon.Ozon/SetOzonAuth"
 	Ozon_GetOzonAuth_FullMethodName   = "/ozon.Ozon/GetOzonAuth"
 	Ozon_ErrorOzonAuth_FullMethodName = "/ozon.Ozon/ErrorOzonAuth"
+	Ozon_GetWidgetData_FullMethodName = "/ozon.Ozon/GetWidgetData"
 )
 
 // OzonClient is the client API for Ozon service.
@@ -31,6 +32,7 @@ type OzonClient interface {
 	SetOzonAuth(ctx context.Context, in *SetOzonAuthRequest, opts ...grpc.CallOption) (*BoolReply, error)
 	GetOzonAuth(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*OzonAuth, error)
 	ErrorOzonAuth(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*BoolReply, error)
+	GetWidgetData(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*WidgetReply, error)
 }
 
 type ozonClient struct {
@@ -68,6 +70,15 @@ func (c *ozonClient) ErrorOzonAuth(ctx context.Context, in *AuthRequest, opts ..
 	return out, nil
 }
 
+func (c *ozonClient) GetWidgetData(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*WidgetReply, error) {
+	out := new(WidgetReply)
+	err := c.cc.Invoke(ctx, Ozon_GetWidgetData_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OzonServer is the server API for Ozon service.
 // All implementations must embed UnimplementedOzonServer
 // for forward compatibility
@@ -75,6 +86,7 @@ type OzonServer interface {
 	SetOzonAuth(context.Context, *SetOzonAuthRequest) (*BoolReply, error)
 	GetOzonAuth(context.Context, *AuthRequest) (*OzonAuth, error)
 	ErrorOzonAuth(context.Context, *AuthRequest) (*BoolReply, error)
+	GetWidgetData(context.Context, *AuthRequest) (*WidgetReply, error)
 	mustEmbedUnimplementedOzonServer()
 }
 
@@ -90,6 +102,9 @@ func (UnimplementedOzonServer) GetOzonAuth(context.Context, *AuthRequest) (*Ozon
 }
 func (UnimplementedOzonServer) ErrorOzonAuth(context.Context, *AuthRequest) (*BoolReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ErrorOzonAuth not implemented")
+}
+func (UnimplementedOzonServer) GetWidgetData(context.Context, *AuthRequest) (*WidgetReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWidgetData not implemented")
 }
 func (UnimplementedOzonServer) mustEmbedUnimplementedOzonServer() {}
 
@@ -158,6 +173,24 @@ func _Ozon_ErrorOzonAuth_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Ozon_GetWidgetData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OzonServer).GetWidgetData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Ozon_GetWidgetData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OzonServer).GetWidgetData(ctx, req.(*AuthRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Ozon_ServiceDesc is the grpc.ServiceDesc for Ozon service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +209,10 @@ var Ozon_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ErrorOzonAuth",
 			Handler:    _Ozon_ErrorOzonAuth_Handler,
+		},
+		{
+			MethodName: "GetWidgetData",
+			Handler:    _Ozon_GetWidgetData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

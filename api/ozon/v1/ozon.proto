@@ -8,6 +8,7 @@ service Ozon {
   rpc SetOzonAuth (SetOzonAuthRequest) returns (BoolReply) {}
   rpc GetOzonAuth (AuthRequest) returns (OzonAuth) {}
   rpc ErrorOzonAuth (AuthRequest) returns (BoolReply) {}
+  rpc GetWidgetData (AuthRequest) returns (WidgetReply) {}
 }
 
 message Role {
@@ -36,4 +37,20 @@ message OzonAuth {
 message SetOzonAuthRequest {
   AuthRequest auth = 1;
   OzonAuth ozonAuth = 2;
+}
+
+message ProductCount {
+  int64 count = 1;
+}
+
+message DaySales {
+  string dayName = 1;
+  string date = 2;
+  int64 count = 3;
+  int64 sum = 4;
+}
+
+message WidgetReply {
+  ProductCount productCount = 1;
+  repeated DaySales daySales = 2;
 }
