@@ -1,0 +1,24 @@
+syntax = "proto3";
+import "staticV1.proto";
+
+package protocolV1;
+
+option go_package = "github.com/ansanych/protocol";
+
+service Ozon {
+  rpc SetOzonAuth (SetOzonAuthRequest) returns (BoolReply) {}
+  rpc GetOzonAuth (Access) returns (OzonAuth) {}
+  rpc ErrorOzonAuth (Access) returns (BoolReply) {}
+  rpc GetWidgetData (Access) returns (WidgetReply) {}
+}
+
+message OzonAuth {
+  int32 clientID = 1;
+  string apiKey = 2;
+  bool error = 3;
+}
+
+message SetOzonAuthRequest {
+  Access auth = 1;
+  OzonAuth ozonAuth = 2;
+}
