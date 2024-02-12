@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.12.4
-// source: v1/ozonV1.proto
+// source: oz.proto
 
 package protocol
 
@@ -19,10 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Ozon_SetOzonAuth_FullMethodName   = "/protocolV1.Ozon/SetOzonAuth"
-	Ozon_GetOzonAuth_FullMethodName   = "/protocolV1.Ozon/GetOzonAuth"
-	Ozon_ErrorOzonAuth_FullMethodName = "/protocolV1.Ozon/ErrorOzonAuth"
-	Ozon_GetWidgetData_FullMethodName = "/protocolV1.Ozon/GetWidgetData"
+	Ozon_SetOzonAuth_FullMethodName   = "/protocol.Ozon/SetOzonAuth"
+	Ozon_GetOzonAuth_FullMethodName   = "/protocol.Ozon/GetOzonAuth"
+	Ozon_ErrorOzonAuth_FullMethodName = "/protocol.Ozon/ErrorOzonAuth"
+	Ozon_GetWidgetData_FullMethodName = "/protocol.Ozon/GetWidgetData"
 )
 
 // OzonClient is the client API for Ozon service.
@@ -195,7 +195,7 @@ func _Ozon_GetWidgetData_Handler(srv interface{}, ctx context.Context, dec func(
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Ozon_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "protocolV1.Ozon",
+	ServiceName: "protocol.Ozon",
 	HandlerType: (*OzonServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -216,5 +216,5 @@ var Ozon_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "v1/ozonV1.proto",
+	Metadata: "oz.proto",
 }

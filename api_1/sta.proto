@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package protocolV1;
+package protocol;
 
 option go_package = "github.com/ansanych/protocol";
 
