@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.12.4
-// source: oz.proto
+// source: ozon.proto
 
 package protocol
 
@@ -216,5 +216,5 @@ var Ozon_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "oz.proto",
+	Metadata: "ozon.proto",
 }

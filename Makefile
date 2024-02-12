@@ -1,42 +1,34 @@
-genStatic:
-	protoc -I ./api \
- 			--go_out ./api \
- 			--go_opt paths=source_relative \
- 			--go-grpc_out ./api \
- 			--go-grpc_opt paths=source_relative \
- 			./api/static/v1/static.proto
-
-genAuth:
-	protoc -I ./api \
-			--proto_path=./ \
- 			--go_out ./api \
- 			--go_opt paths=source_relative \
- 			--go-grpc_out ./api \
- 			--go-grpc_opt paths=source_relative \
- 			./api/auth/v1/auth.proto
-
-genSettings:
-	protoc -I ./api \
-			--proto_path=./ \
- 			--go_out ./api \
- 			--go_opt paths=source_relative \
- 			--go-grpc_out ./api \
- 			--go-grpc_opt paths=source_relative \
- 			./api/settings/v1/settings.proto
+getShare:
+	protoc -I ./api_1 \
+			--go_out ./api_1 \
+			--go_opt paths=source_relative \
+			--go-grpc_out ./api_1 \
+			--go-grpc_opt paths=source_relative \
+			./api_1/share.proto
 
 genOzon:
-	protoc -I ./api \
-			--proto_path=./ \
- 			--go_out ./api \
- 			--go_opt paths=source_relative \
- 			--go-grpc_out ./api \
- 			--go-grpc_opt paths=source_relative \
- 			./api/ozon/v1/ozon.proto
+	protoc -I ./api_1 \
+			--proto_path=./api_1 \
+			--go_out ./api_1 \
+			--go_opt paths=source_relative \
+			--go-grpc_out ./api_1 \
+			--go-grpc_opt paths=source_relative \
+			./api_1/ozon.proto
 
+genSettings:
+	protoc -I ./api_1 \
+			--proto_path=./api_1 \
+			--go_out ./api_1 \
+			--go_opt paths=source_relative \
+			--go-grpc_out ./api_1 \
+			--go-grpc_opt paths=source_relative \
+			./api_1/settings.proto
 
-	protoc -I ./api \
- 			--go_out ./api \
- 			--go_opt paths=source_relative \
- 			--go-grpc_out ./api \
- 			--go-grpc_opt paths=source_relative \
- 			./api/v1/staticV1.proto
+genAuth:
+	protoc -I ./api_1 \
+			--proto_path=./api_1 \
+			--go_out ./api_1 \
+			--go_opt paths=source_relative \
+			--go-grpc_out ./api_1 \
+			--go-grpc_opt paths=source_relative \
+			./api_1/auth.proto
