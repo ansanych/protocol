@@ -55,3 +55,37 @@ message DeleteRequest {
 message InsertReply {
   int64 ID = 1;
 }
+
+message Filter {
+  string key = 1;
+  repeated string values = 2;
+}
+
+message Sorting {
+  string key = 1;
+  string order = 2;
+}
+
+message SelectParams {
+  repeated Filter filters = 1;
+  repeated Sorting sorting = 2;
+}
+
+message SelectRequest {
+  Access auth = 1;
+  SelectParams filters = 2;
+}
+
+message ShopProduct {
+  int64 ID = 1;
+  string title = 2;
+  string article = 3;
+  string image = 4;
+  bool active = 5;
+}
+
+message ShopProductList {
+  repeated ShopProduct products = 1;
+  Pagination pagination = 2;
+  SelectParams filters = 3;
+}

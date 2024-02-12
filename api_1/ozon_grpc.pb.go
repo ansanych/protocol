@@ -19,10 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Ozon_SetOzonAuth_FullMethodName   = "/protocol.Ozon/SetOzonAuth"
-	Ozon_GetOzonAuth_FullMethodName   = "/protocol.Ozon/GetOzonAuth"
-	Ozon_ErrorOzonAuth_FullMethodName = "/protocol.Ozon/ErrorOzonAuth"
-	Ozon_GetWidgetData_FullMethodName = "/protocol.Ozon/GetWidgetData"
+	Ozon_SetOzonAuth_FullMethodName    = "/protocol.Ozon/SetOzonAuth"
+	Ozon_GetOzonAuth_FullMethodName    = "/protocol.Ozon/GetOzonAuth"
+	Ozon_ErrorOzonAuth_FullMethodName  = "/protocol.Ozon/ErrorOzonAuth"
+	Ozon_GetWidgetData_FullMethodName  = "/protocol.Ozon/GetWidgetData"
+	Ozon_GetProductList_FullMethodName = "/protocol.Ozon/GetProductList"
 )
 
 // OzonClient is the client API for Ozon service.
@@ -33,6 +34,7 @@ type OzonClient interface {
 	GetOzonAuth(ctx context.Context, in *Access, opts ...grpc.CallOption) (*OzonAuth, error)
 	ErrorOzonAuth(ctx context.Context, in *Access, opts ...grpc.CallOption) (*BoolReply, error)
 	GetWidgetData(ctx context.Context, in *Access, opts ...grpc.CallOption) (*WidgetReply, error)
+	GetProductList(ctx context.Context, in *SelectRequest, opts ...grpc.CallOption) (*ShopProductList, error)
 }
 
 type ozonClient struct {
@@ -79,6 +81,15 @@ func (c *ozonClient) GetWidgetData(ctx context.Context, in *Access, opts ...grpc
 	return out, nil
 }
 
+func (c *ozonClient) GetProductList(ctx context.Context, in *SelectRequest, opts ...grpc.CallOption) (*ShopProductList, error) {
+	out := new(ShopProductList)
+	err := c.cc.Invoke(ctx, Ozon_GetProductList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OzonServer is the server API for Ozon service.
 // All implementations must embed UnimplementedOzonServer
 // for forward compatibility
@@ -87,6 +98,7 @@ type OzonServer interface {
 	GetOzonAuth(context.Context, *Access) (*OzonAuth, error)
 	ErrorOzonAuth(context.Context, *Access) (*BoolReply, error)
 	GetWidgetData(context.Context, *Access) (*WidgetReply, error)
+	GetProductList(context.Context, *SelectRequest) (*ShopProductList, error)
 	mustEmbedUnimplementedOzonServer()
 }
 
@@ -105,6 +117,9 @@ func (UnimplementedOzonServer) ErrorOzonAuth(context.Context, *Access) (*BoolRep
 }
 func (UnimplementedOzonServer) GetWidgetData(context.Context, *Access) (*WidgetReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWidgetData not implemented")
+}
+func (UnimplementedOzonServer) GetProductList(context.Context, *SelectRequest) (*ShopProductList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProductList not implemented")
 }
 func (UnimplementedOzonServer) mustEmbedUnimplementedOzonServer() {}
 
@@ -191,6 +206,24 @@ func _Ozon_GetWidgetData_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Ozon_GetProductList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OzonServer).GetProductList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Ozon_GetProductList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OzonServer).GetProductList(ctx, req.(*SelectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Ozon_ServiceDesc is the grpc.ServiceDesc for Ozon service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -213,6 +246,10 @@ var Ozon_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetWidgetData",
 			Handler:    _Ozon_GetWidgetData_Handler,
+		},
+		{
+			MethodName: "GetProductList",
+			Handler:    _Ozon_GetProductList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
