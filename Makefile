@@ -1,5 +1,14 @@
+genStatic:
+	protoc -I ./api \
+ 			--go_out ./api \
+ 			--go_opt paths=source_relative \
+ 			--go-grpc_out ./api \
+ 			--go-grpc_opt paths=source_relative \
+ 			./api/static/v1/static.proto
+
 genAuth:
 	protoc -I ./api \
+			--proto_path=./ \
  			--go_out ./api \
  			--go_opt paths=source_relative \
  			--go-grpc_out ./api \
@@ -8,6 +17,7 @@ genAuth:
 
 genSettings:
 	protoc -I ./api \
+			--proto_path=./ \
  			--go_out ./api \
  			--go_opt paths=source_relative \
  			--go-grpc_out ./api \
@@ -16,6 +26,7 @@ genSettings:
 
 genOzon:
 	protoc -I ./api \
+			--proto_path=./ \
  			--go_out ./api \
  			--go_opt paths=source_relative \
  			--go-grpc_out ./api \

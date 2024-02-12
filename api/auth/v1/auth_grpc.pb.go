@@ -32,7 +32,7 @@ type AuthClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*BoolReply, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*LoginReply, error)
-	Access(ctx context.Context, in *AccessRequest, opts ...grpc.CallOption) (*AccessReply, error)
+	Access(ctx context.Context, in *AccessRequest, opts ...grpc.CallOption) (*Access, error)
 }
 
 type authClient struct {
@@ -70,8 +70,8 @@ func (c *authClient) Refresh(ctx context.Context, in *RefreshRequest, opts ...gr
 	return out, nil
 }
 
-func (c *authClient) Access(ctx context.Context, in *AccessRequest, opts ...grpc.CallOption) (*AccessReply, error) {
-	out := new(AccessReply)
+func (c *authClient) Access(ctx context.Context, in *AccessRequest, opts ...grpc.CallOption) (*Access, error) {
+	out := new(Access)
 	err := c.cc.Invoke(ctx, Auth_Access_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -86,7 +86,7 @@ type AuthServer interface {
 	Register(context.Context, *RegisterRequest) (*BoolReply, error)
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
 	Refresh(context.Context, *RefreshRequest) (*LoginReply, error)
-	Access(context.Context, *AccessRequest) (*AccessReply, error)
+	Access(context.Context, *AccessRequest) (*Access, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -103,7 +103,7 @@ func (UnimplementedAuthServer) Login(context.Context, *LoginRequest) (*LoginRepl
 func (UnimplementedAuthServer) Refresh(context.Context, *RefreshRequest) (*LoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Refresh not implemented")
 }
-func (UnimplementedAuthServer) Access(context.Context, *AccessRequest) (*AccessReply, error) {
+func (UnimplementedAuthServer) Access(context.Context, *AccessRequest) (*Access, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Access not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}

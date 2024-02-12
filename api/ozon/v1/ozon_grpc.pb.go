@@ -30,9 +30,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OzonClient interface {
 	SetOzonAuth(ctx context.Context, in *SetOzonAuthRequest, opts ...grpc.CallOption) (*BoolReply, error)
-	GetOzonAuth(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*OzonAuth, error)
-	ErrorOzonAuth(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*BoolReply, error)
-	GetWidgetData(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*WidgetReply, error)
+	GetOzonAuth(ctx context.Context, in *Access, opts ...grpc.CallOption) (*OzonAuth, error)
+	ErrorOzonAuth(ctx context.Context, in *Access, opts ...grpc.CallOption) (*BoolReply, error)
+	GetWidgetData(ctx context.Context, in *Access, opts ...grpc.CallOption) (*WidgetReply, error)
 }
 
 type ozonClient struct {
@@ -52,7 +52,7 @@ func (c *ozonClient) SetOzonAuth(ctx context.Context, in *SetOzonAuthRequest, op
 	return out, nil
 }
 
-func (c *ozonClient) GetOzonAuth(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*OzonAuth, error) {
+func (c *ozonClient) GetOzonAuth(ctx context.Context, in *Access, opts ...grpc.CallOption) (*OzonAuth, error) {
 	out := new(OzonAuth)
 	err := c.cc.Invoke(ctx, Ozon_GetOzonAuth_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -61,7 +61,7 @@ func (c *ozonClient) GetOzonAuth(ctx context.Context, in *AuthRequest, opts ...g
 	return out, nil
 }
 
-func (c *ozonClient) ErrorOzonAuth(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*BoolReply, error) {
+func (c *ozonClient) ErrorOzonAuth(ctx context.Context, in *Access, opts ...grpc.CallOption) (*BoolReply, error) {
 	out := new(BoolReply)
 	err := c.cc.Invoke(ctx, Ozon_ErrorOzonAuth_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -70,7 +70,7 @@ func (c *ozonClient) ErrorOzonAuth(ctx context.Context, in *AuthRequest, opts ..
 	return out, nil
 }
 
-func (c *ozonClient) GetWidgetData(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*WidgetReply, error) {
+func (c *ozonClient) GetWidgetData(ctx context.Context, in *Access, opts ...grpc.CallOption) (*WidgetReply, error) {
 	out := new(WidgetReply)
 	err := c.cc.Invoke(ctx, Ozon_GetWidgetData_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -84,9 +84,9 @@ func (c *ozonClient) GetWidgetData(ctx context.Context, in *AuthRequest, opts ..
 // for forward compatibility
 type OzonServer interface {
 	SetOzonAuth(context.Context, *SetOzonAuthRequest) (*BoolReply, error)
-	GetOzonAuth(context.Context, *AuthRequest) (*OzonAuth, error)
-	ErrorOzonAuth(context.Context, *AuthRequest) (*BoolReply, error)
-	GetWidgetData(context.Context, *AuthRequest) (*WidgetReply, error)
+	GetOzonAuth(context.Context, *Access) (*OzonAuth, error)
+	ErrorOzonAuth(context.Context, *Access) (*BoolReply, error)
+	GetWidgetData(context.Context, *Access) (*WidgetReply, error)
 	mustEmbedUnimplementedOzonServer()
 }
 
@@ -97,13 +97,13 @@ type UnimplementedOzonServer struct {
 func (UnimplementedOzonServer) SetOzonAuth(context.Context, *SetOzonAuthRequest) (*BoolReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetOzonAuth not implemented")
 }
-func (UnimplementedOzonServer) GetOzonAuth(context.Context, *AuthRequest) (*OzonAuth, error) {
+func (UnimplementedOzonServer) GetOzonAuth(context.Context, *Access) (*OzonAuth, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOzonAuth not implemented")
 }
-func (UnimplementedOzonServer) ErrorOzonAuth(context.Context, *AuthRequest) (*BoolReply, error) {
+func (UnimplementedOzonServer) ErrorOzonAuth(context.Context, *Access) (*BoolReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ErrorOzonAuth not implemented")
 }
-func (UnimplementedOzonServer) GetWidgetData(context.Context, *AuthRequest) (*WidgetReply, error) {
+func (UnimplementedOzonServer) GetWidgetData(context.Context, *Access) (*WidgetReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWidgetData not implemented")
 }
 func (UnimplementedOzonServer) mustEmbedUnimplementedOzonServer() {}
@@ -138,7 +138,7 @@ func _Ozon_SetOzonAuth_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 func _Ozon_GetOzonAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthRequest)
+	in := new(Access)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -150,13 +150,13 @@ func _Ozon_GetOzonAuth_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: Ozon_GetOzonAuth_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OzonServer).GetOzonAuth(ctx, req.(*AuthRequest))
+		return srv.(OzonServer).GetOzonAuth(ctx, req.(*Access))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Ozon_ErrorOzonAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthRequest)
+	in := new(Access)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -168,13 +168,13 @@ func _Ozon_ErrorOzonAuth_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: Ozon_ErrorOzonAuth_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OzonServer).ErrorOzonAuth(ctx, req.(*AuthRequest))
+		return srv.(OzonServer).ErrorOzonAuth(ctx, req.(*Access))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Ozon_GetWidgetData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthRequest)
+	in := new(Access)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -186,7 +186,7 @@ func _Ozon_GetWidgetData_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: Ozon_GetWidgetData_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OzonServer).GetWidgetData(ctx, req.(*AuthRequest))
+		return srv.(OzonServer).GetWidgetData(ctx, req.(*Access))
 	}
 	return interceptor(ctx, in, info, handler)
 }

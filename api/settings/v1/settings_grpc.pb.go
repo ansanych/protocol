@@ -47,9 +47,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SettingsClient interface {
-	GetTaxes(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*TaxesReply, error)
+	GetTaxes(ctx context.Context, in *Access, opts ...grpc.CallOption) (*TaxesReply, error)
 	SetCompanyTax(ctx context.Context, in *SetCompanyTaxRequest, opts ...grpc.CallOption) (*BoolReply, error)
-	GetCompanyTaxes(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*CompanyTaxesReply, error)
+	GetCompanyTaxes(ctx context.Context, in *Access, opts ...grpc.CallOption) (*CompanyTaxesReply, error)
 	GetCompanyTax(ctx context.Context, in *GetCompanyTaxRequest, opts ...grpc.CallOption) (*CompanyTax, error)
 	GetBrands(ctx context.Context, in *GetBrandsRequest, opts ...grpc.CallOption) (*BrandsReply, error)
 	GetBrand(ctx context.Context, in *GetBrandRequest, opts ...grpc.CallOption) (*Brand, error)
@@ -57,16 +57,16 @@ type SettingsClient interface {
 	SetBrand(ctx context.Context, in *SetBrandRequest, opts ...grpc.CallOption) (*InsertReply, error)
 	GetCompanyBrands(ctx context.Context, in *GetCompanyBrandsRequest, opts ...grpc.CallOption) (*BrandsReply, error)
 	GetCompanyBrand(ctx context.Context, in *GetBrandRequest, opts ...grpc.CallOption) (*Brand, error)
-	GetMargin(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*Margin, error)
+	GetMargin(ctx context.Context, in *Access, opts ...grpc.CallOption) (*Margin, error)
 	GetMarginBrand(ctx context.Context, in *MarginBrandRequest, opts ...grpc.CallOption) (*Margin, error)
 	SetMargin(ctx context.Context, in *SetMarginRequest, opts ...grpc.CallOption) (*InsertReply, error)
 	SetMarginBrand(ctx context.Context, in *SetMarginRequest, opts ...grpc.CallOption) (*InsertReply, error)
 	UpdateMargin(ctx context.Context, in *UpdateMarginRequest, opts ...grpc.CallOption) (*BoolReply, error)
-	GetMarginArchive(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*Margins, error)
+	GetMarginArchive(ctx context.Context, in *Access, opts ...grpc.CallOption) (*Margins, error)
 	GetMarginArchiveBrand(ctx context.Context, in *MarginBrandRequest, opts ...grpc.CallOption) (*Margins, error)
 	DeleteMargin(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*BoolReply, error)
-	GetShops(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*ShopsReply, error)
-	GetCompanyShops(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*CompanyShopsReply, error)
+	GetShops(ctx context.Context, in *Access, opts ...grpc.CallOption) (*ShopsReply, error)
+	GetCompanyShops(ctx context.Context, in *Access, opts ...grpc.CallOption) (*CompanyShopsReply, error)
 	SetCompanyShop(ctx context.Context, in *SetCompanyShopRequest, opts ...grpc.CallOption) (*BoolReply, error)
 	ActivateCompanyShop(ctx context.Context, in *ActivateCompanyShopRequest, opts ...grpc.CallOption) (*BoolReply, error)
 }
@@ -79,7 +79,7 @@ func NewSettingsClient(cc grpc.ClientConnInterface) SettingsClient {
 	return &settingsClient{cc}
 }
 
-func (c *settingsClient) GetTaxes(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*TaxesReply, error) {
+func (c *settingsClient) GetTaxes(ctx context.Context, in *Access, opts ...grpc.CallOption) (*TaxesReply, error) {
 	out := new(TaxesReply)
 	err := c.cc.Invoke(ctx, Settings_GetTaxes_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -97,7 +97,7 @@ func (c *settingsClient) SetCompanyTax(ctx context.Context, in *SetCompanyTaxReq
 	return out, nil
 }
 
-func (c *settingsClient) GetCompanyTaxes(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*CompanyTaxesReply, error) {
+func (c *settingsClient) GetCompanyTaxes(ctx context.Context, in *Access, opts ...grpc.CallOption) (*CompanyTaxesReply, error) {
 	out := new(CompanyTaxesReply)
 	err := c.cc.Invoke(ctx, Settings_GetCompanyTaxes_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -169,7 +169,7 @@ func (c *settingsClient) GetCompanyBrand(ctx context.Context, in *GetBrandReques
 	return out, nil
 }
 
-func (c *settingsClient) GetMargin(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*Margin, error) {
+func (c *settingsClient) GetMargin(ctx context.Context, in *Access, opts ...grpc.CallOption) (*Margin, error) {
 	out := new(Margin)
 	err := c.cc.Invoke(ctx, Settings_GetMargin_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -214,7 +214,7 @@ func (c *settingsClient) UpdateMargin(ctx context.Context, in *UpdateMarginReque
 	return out, nil
 }
 
-func (c *settingsClient) GetMarginArchive(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*Margins, error) {
+func (c *settingsClient) GetMarginArchive(ctx context.Context, in *Access, opts ...grpc.CallOption) (*Margins, error) {
 	out := new(Margins)
 	err := c.cc.Invoke(ctx, Settings_GetMarginArchive_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -241,7 +241,7 @@ func (c *settingsClient) DeleteMargin(ctx context.Context, in *DeleteRequest, op
 	return out, nil
 }
 
-func (c *settingsClient) GetShops(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*ShopsReply, error) {
+func (c *settingsClient) GetShops(ctx context.Context, in *Access, opts ...grpc.CallOption) (*ShopsReply, error) {
 	out := new(ShopsReply)
 	err := c.cc.Invoke(ctx, Settings_GetShops_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -250,7 +250,7 @@ func (c *settingsClient) GetShops(ctx context.Context, in *AuthRequest, opts ...
 	return out, nil
 }
 
-func (c *settingsClient) GetCompanyShops(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*CompanyShopsReply, error) {
+func (c *settingsClient) GetCompanyShops(ctx context.Context, in *Access, opts ...grpc.CallOption) (*CompanyShopsReply, error) {
 	out := new(CompanyShopsReply)
 	err := c.cc.Invoke(ctx, Settings_GetCompanyShops_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -281,9 +281,9 @@ func (c *settingsClient) ActivateCompanyShop(ctx context.Context, in *ActivateCo
 // All implementations must embed UnimplementedSettingsServer
 // for forward compatibility
 type SettingsServer interface {
-	GetTaxes(context.Context, *AuthRequest) (*TaxesReply, error)
+	GetTaxes(context.Context, *Access) (*TaxesReply, error)
 	SetCompanyTax(context.Context, *SetCompanyTaxRequest) (*BoolReply, error)
-	GetCompanyTaxes(context.Context, *AuthRequest) (*CompanyTaxesReply, error)
+	GetCompanyTaxes(context.Context, *Access) (*CompanyTaxesReply, error)
 	GetCompanyTax(context.Context, *GetCompanyTaxRequest) (*CompanyTax, error)
 	GetBrands(context.Context, *GetBrandsRequest) (*BrandsReply, error)
 	GetBrand(context.Context, *GetBrandRequest) (*Brand, error)
@@ -291,16 +291,16 @@ type SettingsServer interface {
 	SetBrand(context.Context, *SetBrandRequest) (*InsertReply, error)
 	GetCompanyBrands(context.Context, *GetCompanyBrandsRequest) (*BrandsReply, error)
 	GetCompanyBrand(context.Context, *GetBrandRequest) (*Brand, error)
-	GetMargin(context.Context, *AuthRequest) (*Margin, error)
+	GetMargin(context.Context, *Access) (*Margin, error)
 	GetMarginBrand(context.Context, *MarginBrandRequest) (*Margin, error)
 	SetMargin(context.Context, *SetMarginRequest) (*InsertReply, error)
 	SetMarginBrand(context.Context, *SetMarginRequest) (*InsertReply, error)
 	UpdateMargin(context.Context, *UpdateMarginRequest) (*BoolReply, error)
-	GetMarginArchive(context.Context, *AuthRequest) (*Margins, error)
+	GetMarginArchive(context.Context, *Access) (*Margins, error)
 	GetMarginArchiveBrand(context.Context, *MarginBrandRequest) (*Margins, error)
 	DeleteMargin(context.Context, *DeleteRequest) (*BoolReply, error)
-	GetShops(context.Context, *AuthRequest) (*ShopsReply, error)
-	GetCompanyShops(context.Context, *AuthRequest) (*CompanyShopsReply, error)
+	GetShops(context.Context, *Access) (*ShopsReply, error)
+	GetCompanyShops(context.Context, *Access) (*CompanyShopsReply, error)
 	SetCompanyShop(context.Context, *SetCompanyShopRequest) (*BoolReply, error)
 	ActivateCompanyShop(context.Context, *ActivateCompanyShopRequest) (*BoolReply, error)
 	mustEmbedUnimplementedSettingsServer()
@@ -310,13 +310,13 @@ type SettingsServer interface {
 type UnimplementedSettingsServer struct {
 }
 
-func (UnimplementedSettingsServer) GetTaxes(context.Context, *AuthRequest) (*TaxesReply, error) {
+func (UnimplementedSettingsServer) GetTaxes(context.Context, *Access) (*TaxesReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTaxes not implemented")
 }
 func (UnimplementedSettingsServer) SetCompanyTax(context.Context, *SetCompanyTaxRequest) (*BoolReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetCompanyTax not implemented")
 }
-func (UnimplementedSettingsServer) GetCompanyTaxes(context.Context, *AuthRequest) (*CompanyTaxesReply, error) {
+func (UnimplementedSettingsServer) GetCompanyTaxes(context.Context, *Access) (*CompanyTaxesReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCompanyTaxes not implemented")
 }
 func (UnimplementedSettingsServer) GetCompanyTax(context.Context, *GetCompanyTaxRequest) (*CompanyTax, error) {
@@ -340,7 +340,7 @@ func (UnimplementedSettingsServer) GetCompanyBrands(context.Context, *GetCompany
 func (UnimplementedSettingsServer) GetCompanyBrand(context.Context, *GetBrandRequest) (*Brand, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCompanyBrand not implemented")
 }
-func (UnimplementedSettingsServer) GetMargin(context.Context, *AuthRequest) (*Margin, error) {
+func (UnimplementedSettingsServer) GetMargin(context.Context, *Access) (*Margin, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMargin not implemented")
 }
 func (UnimplementedSettingsServer) GetMarginBrand(context.Context, *MarginBrandRequest) (*Margin, error) {
@@ -355,7 +355,7 @@ func (UnimplementedSettingsServer) SetMarginBrand(context.Context, *SetMarginReq
 func (UnimplementedSettingsServer) UpdateMargin(context.Context, *UpdateMarginRequest) (*BoolReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMargin not implemented")
 }
-func (UnimplementedSettingsServer) GetMarginArchive(context.Context, *AuthRequest) (*Margins, error) {
+func (UnimplementedSettingsServer) GetMarginArchive(context.Context, *Access) (*Margins, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMarginArchive not implemented")
 }
 func (UnimplementedSettingsServer) GetMarginArchiveBrand(context.Context, *MarginBrandRequest) (*Margins, error) {
@@ -364,10 +364,10 @@ func (UnimplementedSettingsServer) GetMarginArchiveBrand(context.Context, *Margi
 func (UnimplementedSettingsServer) DeleteMargin(context.Context, *DeleteRequest) (*BoolReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMargin not implemented")
 }
-func (UnimplementedSettingsServer) GetShops(context.Context, *AuthRequest) (*ShopsReply, error) {
+func (UnimplementedSettingsServer) GetShops(context.Context, *Access) (*ShopsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetShops not implemented")
 }
-func (UnimplementedSettingsServer) GetCompanyShops(context.Context, *AuthRequest) (*CompanyShopsReply, error) {
+func (UnimplementedSettingsServer) GetCompanyShops(context.Context, *Access) (*CompanyShopsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCompanyShops not implemented")
 }
 func (UnimplementedSettingsServer) SetCompanyShop(context.Context, *SetCompanyShopRequest) (*BoolReply, error) {
@@ -390,7 +390,7 @@ func RegisterSettingsServer(s grpc.ServiceRegistrar, srv SettingsServer) {
 }
 
 func _Settings_GetTaxes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthRequest)
+	in := new(Access)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -402,7 +402,7 @@ func _Settings_GetTaxes_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: Settings_GetTaxes_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SettingsServer).GetTaxes(ctx, req.(*AuthRequest))
+		return srv.(SettingsServer).GetTaxes(ctx, req.(*Access))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -426,7 +426,7 @@ func _Settings_SetCompanyTax_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _Settings_GetCompanyTaxes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthRequest)
+	in := new(Access)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -438,7 +438,7 @@ func _Settings_GetCompanyTaxes_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: Settings_GetCompanyTaxes_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SettingsServer).GetCompanyTaxes(ctx, req.(*AuthRequest))
+		return srv.(SettingsServer).GetCompanyTaxes(ctx, req.(*Access))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -570,7 +570,7 @@ func _Settings_GetCompanyBrand_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _Settings_GetMargin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthRequest)
+	in := new(Access)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -582,7 +582,7 @@ func _Settings_GetMargin_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: Settings_GetMargin_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SettingsServer).GetMargin(ctx, req.(*AuthRequest))
+		return srv.(SettingsServer).GetMargin(ctx, req.(*Access))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -660,7 +660,7 @@ func _Settings_UpdateMargin_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _Settings_GetMarginArchive_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthRequest)
+	in := new(Access)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -672,7 +672,7 @@ func _Settings_GetMarginArchive_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: Settings_GetMarginArchive_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SettingsServer).GetMarginArchive(ctx, req.(*AuthRequest))
+		return srv.(SettingsServer).GetMarginArchive(ctx, req.(*Access))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -714,7 +714,7 @@ func _Settings_DeleteMargin_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _Settings_GetShops_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthRequest)
+	in := new(Access)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -726,13 +726,13 @@ func _Settings_GetShops_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: Settings_GetShops_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SettingsServer).GetShops(ctx, req.(*AuthRequest))
+		return srv.(SettingsServer).GetShops(ctx, req.(*Access))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Settings_GetCompanyShops_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AuthRequest)
+	in := new(Access)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -744,7 +744,7 @@ func _Settings_GetCompanyShops_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: Settings_GetCompanyShops_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SettingsServer).GetCompanyShops(ctx, req.(*AuthRequest))
+		return srv.(SettingsServer).GetCompanyShops(ctx, req.(*Access))
 	}
 	return interceptor(ctx, in, info, handler)
 }

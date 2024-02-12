@@ -1,50 +1,33 @@
 syntax = "proto3";
+import "api/static/v1/static.proto";
 
 package settings;
 
 option go_package = "github.com/ansanych/protocol";
 
 service Settings {
-  rpc GetTaxes (AuthRequest) returns (TaxesReply) {}
-  rpc SetCompanyTax (SetCompanyTaxRequest) returns (BoolReply) {}
-  rpc GetCompanyTaxes (AuthRequest) returns (CompanyTaxesReply) {}
+  rpc GetTaxes (static.Access) returns (TaxesReply) {}
+  rpc SetCompanyTax (SetCompanyTaxRequest) returns (static.BoolReply) {}
+  rpc GetCompanyTaxes (static.Access) returns (CompanyTaxesReply) {}
   rpc GetCompanyTax (GetCompanyTaxRequest) returns (CompanyTax) {}
   rpc GetBrands (GetBrandsRequest) returns (BrandsReply) {}
   rpc GetBrand (GetBrandRequest) returns (Brand) {}
   rpc SearchBrand (SearchBrandRequest) returns (BrandsReply) {}
-  rpc SetBrand (SetBrandRequest) returns (InsertReply) {}
+  rpc SetBrand (SetBrandRequest) returns (static.InsertReply) {}
   rpc GetCompanyBrands (GetCompanyBrandsRequest) returns (BrandsReply) {}
   rpc GetCompanyBrand (GetBrandRequest) returns (Brand) {}
-  rpc GetMargin (AuthRequest) returns (Margin) {}
+  rpc GetMargin (static.Access) returns (Margin) {}
   rpc GetMarginBrand (MarginBrandRequest) returns (Margin) {}
-  rpc SetMargin(SetMarginRequest) returns (InsertReply) {}
-  rpc SetMarginBrand(SetMarginRequest) returns (InsertReply) {}
-  rpc UpdateMargin(UpdateMarginRequest) returns (BoolReply) {}
-  rpc GetMarginArchive (AuthRequest) returns (Margins) {}
+  rpc SetMargin(SetMarginRequest) returns (static.InsertReply) {}
+  rpc SetMarginBrand(SetMarginRequest) returns (static.InsertReply) {}
+  rpc UpdateMargin(UpdateMarginRequest) returns (static.BoolReply) {}
+  rpc GetMarginArchive (static.Access) returns (Margins) {}
   rpc GetMarginArchiveBrand (MarginBrandRequest) returns (Margins) {}
-  rpc DeleteMargin (DeleteRequest) returns (BoolReply) {}
-  rpc GetShops (AuthRequest) returns (ShopsReply) {}
-  rpc GetCompanyShops (AuthRequest) returns (CompanyShopsReply) {}
-  rpc SetCompanyShop (SetCompanyShopRequest) returns (BoolReply) {}
-  rpc ActivateCompanyShop (ActivateCompanyShopRequest) returns (BoolReply) {}
-}
-
-message Pagination {
-  int64 page = 1;
-  int64 pages = 2;
-}
-
-message Role {
-  int64 ID = 1;
-  string title = 2;
-  string code = 3;
-}
-
-message AuthRequest {
-  bool tokenValidation = 1;
-  int64 userID = 2;
-  int64 companyID = 3;
-  repeated Role roles = 4;
+  rpc DeleteMargin (static.DeleteRequest) returns (static.BoolReply) {}
+  rpc GetShops (static.Access) returns (ShopsReply) {}
+  rpc GetCompanyShops (static.Access) returns (CompanyShopsReply) {}
+  rpc SetCompanyShop (SetCompanyShopRequest) returns (static.BoolReply) {}
+  rpc ActivateCompanyShop (ActivateCompanyShopRequest) returns (static.BoolReply) {}
 }
 
 message Tax {
@@ -58,12 +41,8 @@ message TaxesReply {
   repeated Tax taxes = 1;
 }
 
-message BoolReply {
-  bool status = 1;
-}
-
 message SetCompanyTaxRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   int32 taxID = 2;
   int32 year = 3;
 }
@@ -78,7 +57,7 @@ message CompanyTaxesReply {
 }
 
 message GetCompanyTaxRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   int32 year = 2;
 }
 
@@ -92,38 +71,34 @@ message Brand {
 }
 
 message GetBrandsRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   int64 page = 2;
 }
 
 message GetBrandRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   int64 brandID = 2;
   string brandName = 3;
 }
 
 message BrandsReply {
  repeated Brand brands = 1;
- Pagination pagination = 2;
+ static.Pagination pagination = 2;
 }
 
 message SearchBrandRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   string name = 2;
 }
 
 message SetBrandRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   Brand brand = 2;
 }
 
 message GetCompanyBrandsRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   int64 page = 2;
-}
-
-message InsertReply {
-  int64 ID = 1;
 }
 
 message Margin {
@@ -139,12 +114,12 @@ message Margins {
 }
 
 message MarginBrandRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   int64 brandID = 2;
 }
 
 message SetMarginRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   int64 brandID = 2;
   float min = 3;
   float mid = 4;
@@ -152,16 +127,11 @@ message SetMarginRequest {
 }
 
 message UpdateMarginRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   int64 marginID = 2;
   float min = 3;
   float mid = 4;
   float max = 5;
-}
-
-message DeleteRequest {
-  AuthRequest auth = 1;
-  int64 marginID = 2;
 }
 
 message Shop {
@@ -189,12 +159,12 @@ message CompanyShopsReply {
 }
 
 message SetCompanyShopRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   int64 shopID = 2;
 }
 
 message ActivateCompanyShopRequest {
-  AuthRequest auth = 1;
+  static.Access auth = 1;
   int64 shopID = 2;
   bool active = 3;
 }
