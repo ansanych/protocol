@@ -1,4 +1,4 @@
-getShare:
+genShare:
 	protoc -I ./api_1 \
 			--go_out ./api_1 \
 			--go_opt paths=source_relative \
