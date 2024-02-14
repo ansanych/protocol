@@ -89,3 +89,8 @@ message ShopProductList {
   Pagination pagination = 2;
   SelectParams filters = 3;
 }
+
+message ShopProductRequest {
+  Access auth = 1;
+  int64 ID = 2;
+}

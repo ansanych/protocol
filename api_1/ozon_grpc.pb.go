@@ -24,6 +24,7 @@ const (
 	Ozon_ErrorOzonAuth_FullMethodName  = "/protocol.Ozon/ErrorOzonAuth"
 	Ozon_GetWidgetData_FullMethodName  = "/protocol.Ozon/GetWidgetData"
 	Ozon_GetProductList_FullMethodName = "/protocol.Ozon/GetProductList"
+	Ozon_GetProduct_FullMethodName     = "/protocol.Ozon/GetProduct"
 )
 
 // OzonClient is the client API for Ozon service.
@@ -35,6 +36,7 @@ type OzonClient interface {
 	ErrorOzonAuth(ctx context.Context, in *Access, opts ...grpc.CallOption) (*BoolReply, error)
 	GetWidgetData(ctx context.Context, in *Access, opts ...grpc.CallOption) (*WidgetReply, error)
 	GetProductList(ctx context.Context, in *SelectRequest, opts ...grpc.CallOption) (*ShopProductList, error)
+	GetProduct(ctx context.Context, in *ShopProductRequest, opts ...grpc.CallOption) (*ShopProduct, error)
 }
 
 type ozonClient struct {
@@ -90,6 +92,15 @@ func (c *ozonClient) GetProductList(ctx context.Context, in *SelectRequest, opts
 	return out, nil
 }
 
+func (c *ozonClient) GetProduct(ctx context.Context, in *ShopProductRequest, opts ...grpc.CallOption) (*ShopProduct, error) {
+	out := new(ShopProduct)
+	err := c.cc.Invoke(ctx, Ozon_GetProduct_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OzonServer is the server API for Ozon service.
 // All implementations must embed UnimplementedOzonServer
 // for forward compatibility
@@ -99,6 +110,7 @@ type OzonServer interface {
 	ErrorOzonAuth(context.Context, *Access) (*BoolReply, error)
 	GetWidgetData(context.Context, *Access) (*WidgetReply, error)
 	GetProductList(context.Context, *SelectRequest) (*ShopProductList, error)
+	GetProduct(context.Context, *ShopProductRequest) (*ShopProduct, error)
 	mustEmbedUnimplementedOzonServer()
 }
 
@@ -120,6 +132,9 @@ func (UnimplementedOzonServer) GetWidgetData(context.Context, *Access) (*WidgetR
 }
 func (UnimplementedOzonServer) GetProductList(context.Context, *SelectRequest) (*ShopProductList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProductList not implemented")
+}
+func (UnimplementedOzonServer) GetProduct(context.Context, *ShopProductRequest) (*ShopProduct, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProduct not implemented")
 }
 func (UnimplementedOzonServer) mustEmbedUnimplementedOzonServer() {}
 
@@ -224,6 +239,24 @@ func _Ozon_GetProductList_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Ozon_GetProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShopProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OzonServer).GetProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Ozon_GetProduct_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OzonServer).GetProduct(ctx, req.(*ShopProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Ozon_ServiceDesc is the grpc.ServiceDesc for Ozon service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +283,10 @@ var Ozon_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProductList",
 			Handler:    _Ozon_GetProductList_Handler,
+		},
+		{
+			MethodName: "GetProduct",
+			Handler:    _Ozon_GetProduct_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
