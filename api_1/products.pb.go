@@ -151,16 +151,16 @@ type Product struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ID               int64             `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
-	CompanyID        int64             `protobuf:"varint,2,opt,name=companyID,proto3" json:"companyID,omitempty"`
-	Title            string            `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
-	Comment          string            `protobuf:"bytes,4,opt,name=comment,proto3" json:"comment,omitempty"`
-	GroupsID         []int64           `protobuf:"varint,5,rep,packed,name=groupsID,proto3" json:"groupsID,omitempty"`
-	BrandID          int64             `protobuf:"varint,6,opt,name=brandID,proto3" json:"brandID,omitempty"`
-	Active           bool              `protobuf:"varint,7,opt,name=active,proto3" json:"active,omitempty"`
-	Updated          string            `protobuf:"bytes,8,opt,name=updated,proto3" json:"updated,omitempty"`
-	Purchase         float32           `protobuf:"fixed32,9,opt,name=purchase,proto3" json:"purchase,omitempty"`
-	ShopProductLinks *ShopProductLinks `protobuf:"bytes,10,opt,name=shopProductLinks,proto3" json:"shopProductLinks,omitempty"`
+	ID               int64               `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	CompanyID        int64               `protobuf:"varint,2,opt,name=companyID,proto3" json:"companyID,omitempty"`
+	Title            string              `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	Comment          string              `protobuf:"bytes,4,opt,name=comment,proto3" json:"comment,omitempty"`
+	GroupsID         []int64             `protobuf:"varint,5,rep,packed,name=groupsID,proto3" json:"groupsID,omitempty"`
+	BrandID          int64               `protobuf:"varint,6,opt,name=brandID,proto3" json:"brandID,omitempty"`
+	Active           bool                `protobuf:"varint,7,opt,name=active,proto3" json:"active,omitempty"`
+	Updated          string              `protobuf:"bytes,8,opt,name=updated,proto3" json:"updated,omitempty"`
+	Purchase         float32             `protobuf:"fixed32,9,opt,name=purchase,proto3" json:"purchase,omitempty"`
+	ShopProductLinks []*ShopProductLinks `protobuf:"bytes,10,rep,name=shopProductLinks,proto3" json:"shopProductLinks,omitempty"`
 }
 
 func (x *Product) Reset() {
@@ -258,7 +258,7 @@ func (x *Product) GetPurchase() float32 {
 	return 0
 }
 
-func (x *Product) GetShopProductLinks() *ShopProductLinks {
+func (x *Product) GetShopProductLinks() []*ShopProductLinks {
 	if x != nil {
 		return x.ShopProductLinks
 	}
@@ -496,7 +496,7 @@ var file_products_proto_rawDesc = []byte{
 	0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x75, 0x72, 0x63, 0x68, 0x61,
 	0x73, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x02, 0x52, 0x08, 0x70, 0x75, 0x72, 0x63, 0x68, 0x61,
 	0x73, 0x65, 0x12, 0x46, 0x0a, 0x10, 0x73, 0x68, 0x6f, 0x70, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63,
-	0x74, 0x4c, 0x69, 0x6e, 0x6b, 0x73, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x70,
+	0x74, 0x4c, 0x69, 0x6e, 0x6b, 0x73, 0x18, 0x0a, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x63, 0x6f, 0x6c, 0x2e, 0x53, 0x68, 0x6f, 0x70, 0x50, 0x72, 0x6f, 0x64,
 	0x75, 0x63, 0x74, 0x4c, 0x69, 0x6e, 0x6b, 0x73, 0x52, 0x10, 0x73, 0x68, 0x6f, 0x70, 0x50, 0x72,
 	0x6f, 0x64, 0x75, 0x63, 0x74, 0x4c, 0x69, 0x6e, 0x6b, 0x73, 0x22, 0xa6, 0x01, 0x0a, 0x0d, 0x50,

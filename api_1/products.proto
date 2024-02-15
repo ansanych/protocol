@@ -35,7 +35,7 @@ message Product {
   bool active = 7;
   string updated = 8;
   float purchase = 9;
-  ShopProductLinks shopProductLinks = 10;
+  repeated ShopProductLinks shopProductLinks = 10;
 }
   
 message ProductsReply {
