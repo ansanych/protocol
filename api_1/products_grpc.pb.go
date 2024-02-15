@@ -24,6 +24,9 @@ const _ = grpc.SupportPackageIsVersion7
 type ProductsClient interface {
 	GetProducts(ctx context.Context, in *SelectRequest, opts ...grpc.CallOption) (*ProductsReply, error)
 	GetProduct(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*Product, error)
+	CreateFromShop(ctx context.Context, in *ProductLink, opts ...grpc.CallOption) (*BoolReply, error)
+	LinkToShop(ctx context.Context, in *ProductLink, opts ...grpc.CallOption) (*BoolReply, error)
+	UnlinkToShop(ctx context.Context, in *ProductLink, opts ...grpc.CallOption) (*BoolReply, error)
 }
 
 type productsClient struct {
@@ -52,12 +55,42 @@ func (c *productsClient) GetProduct(ctx context.Context, in *ProductRequest, opt
 	return out, nil
 }
 
+func (c *productsClient) CreateFromShop(ctx context.Context, in *ProductLink, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, "/protocol.Products/CreateFromShop", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productsClient) LinkToShop(ctx context.Context, in *ProductLink, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, "/protocol.Products/LinkToShop", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productsClient) UnlinkToShop(ctx context.Context, in *ProductLink, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, "/protocol.Products/UnlinkToShop", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductsServer is the server API for Products service.
 // All implementations must embed UnimplementedProductsServer
 // for forward compatibility
 type ProductsServer interface {
 	GetProducts(context.Context, *SelectRequest) (*ProductsReply, error)
 	GetProduct(context.Context, *ProductRequest) (*Product, error)
+	CreateFromShop(context.Context, *ProductLink) (*BoolReply, error)
+	LinkToShop(context.Context, *ProductLink) (*BoolReply, error)
+	UnlinkToShop(context.Context, *ProductLink) (*BoolReply, error)
 	mustEmbedUnimplementedProductsServer()
 }
 
@@ -70,6 +103,15 @@ func (UnimplementedProductsServer) GetProducts(context.Context, *SelectRequest) 
 }
 func (UnimplementedProductsServer) GetProduct(context.Context, *ProductRequest) (*Product, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProduct not implemented")
+}
+func (UnimplementedProductsServer) CreateFromShop(context.Context, *ProductLink) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateFromShop not implemented")
+}
+func (UnimplementedProductsServer) LinkToShop(context.Context, *ProductLink) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LinkToShop not implemented")
+}
+func (UnimplementedProductsServer) UnlinkToShop(context.Context, *ProductLink) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnlinkToShop not implemented")
 }
 func (UnimplementedProductsServer) mustEmbedUnimplementedProductsServer() {}
 
@@ -120,6 +162,60 @@ func _Products_GetProduct_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Products_CreateFromShop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductLink)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).CreateFromShop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/CreateFromShop",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).CreateFromShop(ctx, req.(*ProductLink))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Products_LinkToShop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductLink)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).LinkToShop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/LinkToShop",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).LinkToShop(ctx, req.(*ProductLink))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Products_UnlinkToShop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductLink)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).UnlinkToShop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/UnlinkToShop",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).UnlinkToShop(ctx, req.(*ProductLink))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Products_ServiceDesc is the grpc.ServiceDesc for Products service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +230,18 @@ var Products_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProduct",
 			Handler:    _Products_GetProduct_Handler,
+		},
+		{
+			MethodName: "CreateFromShop",
+			Handler:    _Products_CreateFromShop_Handler,
+		},
+		{
+			MethodName: "LinkToShop",
+			Handler:    _Products_LinkToShop_Handler,
+		},
+		{
+			MethodName: "UnlinkToShop",
+			Handler:    _Products_UnlinkToShop_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

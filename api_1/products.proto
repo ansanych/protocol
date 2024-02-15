@@ -8,6 +8,9 @@ option go_package = "github.com/ansanych/protocol";
 service Products {
     rpc GetProducts (SelectRequest) returns (ProductsReply) {}
     rpc GetProduct (ProductRequest) returns (Product) {}
+    rpc CreateFromShop (ProductLink) returns (BoolReply) {}
+    rpc LinkToShop (ProductLink) returns (BoolReply) {}
+    rpc UnlinkToShop (ProductLink) returns (BoolReply) {}
 }
 
 message ProductsGroup {
@@ -44,4 +47,12 @@ message ProductsReply {
 message ProductRequest {
   Access auth = 1;
   int64 ID = 2;
+}
+
+message ProductLink {
+  Access auth = 1;
+  int64 productID = 2;
+  string shopCode = 3;
+  int64 shopProductID = 4;
+  string name = 5;
 }
