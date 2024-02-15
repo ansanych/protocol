@@ -43,10 +43,6 @@ message Pagination {
   int64 pages = 2;
 }
 
-message Product {}
-
-message ProductsReply {}
-
 message DeleteRequest {
   Access auth = 1;
   int64 ID = 2;
