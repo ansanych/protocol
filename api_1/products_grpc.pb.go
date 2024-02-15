@@ -27,6 +27,13 @@ type ProductsClient interface {
 	CreateFromShop(ctx context.Context, in *ProductLink, opts ...grpc.CallOption) (*BoolReply, error)
 	LinkToShop(ctx context.Context, in *ProductLink, opts ...grpc.CallOption) (*BoolReply, error)
 	UnlinkToShop(ctx context.Context, in *ProductLink, opts ...grpc.CallOption) (*BoolReply, error)
+	UpdateProduct(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*BoolReply, error)
+	SetProductBrand(ctx context.Context, in *SetProductBrandRequest, opts ...grpc.CallOption) (*BoolReply, error)
+	RemoveProductBrand(ctx context.Context, in *SetProductBrandRequest, opts ...grpc.CallOption) (*BoolReply, error)
+	SetProductPurchase(ctx context.Context, in *SetProductPurchaseRequest, opts ...grpc.CallOption) (*BoolReply, error)
+	GetProductPurchase(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*ProductPurchase, error)
+	GetProductPurchases(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*PurchasesReply, error)
+	RemoveProductPurchase(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*BoolReply, error)
 }
 
 type productsClient struct {
@@ -82,6 +89,69 @@ func (c *productsClient) UnlinkToShop(ctx context.Context, in *ProductLink, opts
 	return out, nil
 }
 
+func (c *productsClient) UpdateProduct(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, "/protocol.Products/UpdateProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productsClient) SetProductBrand(ctx context.Context, in *SetProductBrandRequest, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, "/protocol.Products/SetProductBrand", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productsClient) RemoveProductBrand(ctx context.Context, in *SetProductBrandRequest, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, "/protocol.Products/RemoveProductBrand", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productsClient) SetProductPurchase(ctx context.Context, in *SetProductPurchaseRequest, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, "/protocol.Products/SetProductPurchase", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productsClient) GetProductPurchase(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*ProductPurchase, error) {
+	out := new(ProductPurchase)
+	err := c.cc.Invoke(ctx, "/protocol.Products/GetProductPurchase", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productsClient) GetProductPurchases(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*PurchasesReply, error) {
+	out := new(PurchasesReply)
+	err := c.cc.Invoke(ctx, "/protocol.Products/GetProductPurchases", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productsClient) RemoveProductPurchase(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*BoolReply, error) {
+	out := new(BoolReply)
+	err := c.cc.Invoke(ctx, "/protocol.Products/RemoveProductPurchase", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductsServer is the server API for Products service.
 // All implementations must embed UnimplementedProductsServer
 // for forward compatibility
@@ -91,6 +161,13 @@ type ProductsServer interface {
 	CreateFromShop(context.Context, *ProductLink) (*BoolReply, error)
 	LinkToShop(context.Context, *ProductLink) (*BoolReply, error)
 	UnlinkToShop(context.Context, *ProductLink) (*BoolReply, error)
+	UpdateProduct(context.Context, *UpdateProductRequest) (*BoolReply, error)
+	SetProductBrand(context.Context, *SetProductBrandRequest) (*BoolReply, error)
+	RemoveProductBrand(context.Context, *SetProductBrandRequest) (*BoolReply, error)
+	SetProductPurchase(context.Context, *SetProductPurchaseRequest) (*BoolReply, error)
+	GetProductPurchase(context.Context, *ProductRequest) (*ProductPurchase, error)
+	GetProductPurchases(context.Context, *ProductRequest) (*PurchasesReply, error)
+	RemoveProductPurchase(context.Context, *DeleteRequest) (*BoolReply, error)
 	mustEmbedUnimplementedProductsServer()
 }
 
@@ -112,6 +189,27 @@ func (UnimplementedProductsServer) LinkToShop(context.Context, *ProductLink) (*B
 }
 func (UnimplementedProductsServer) UnlinkToShop(context.Context, *ProductLink) (*BoolReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnlinkToShop not implemented")
+}
+func (UnimplementedProductsServer) UpdateProduct(context.Context, *UpdateProductRequest) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProduct not implemented")
+}
+func (UnimplementedProductsServer) SetProductBrand(context.Context, *SetProductBrandRequest) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetProductBrand not implemented")
+}
+func (UnimplementedProductsServer) RemoveProductBrand(context.Context, *SetProductBrandRequest) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveProductBrand not implemented")
+}
+func (UnimplementedProductsServer) SetProductPurchase(context.Context, *SetProductPurchaseRequest) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetProductPurchase not implemented")
+}
+func (UnimplementedProductsServer) GetProductPurchase(context.Context, *ProductRequest) (*ProductPurchase, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProductPurchase not implemented")
+}
+func (UnimplementedProductsServer) GetProductPurchases(context.Context, *ProductRequest) (*PurchasesReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProductPurchases not implemented")
+}
+func (UnimplementedProductsServer) RemoveProductPurchase(context.Context, *DeleteRequest) (*BoolReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveProductPurchase not implemented")
 }
 func (UnimplementedProductsServer) mustEmbedUnimplementedProductsServer() {}
 
@@ -216,6 +314,132 @@ func _Products_UnlinkToShop_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Products_UpdateProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).UpdateProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/UpdateProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).UpdateProduct(ctx, req.(*UpdateProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Products_SetProductBrand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetProductBrandRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).SetProductBrand(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/SetProductBrand",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).SetProductBrand(ctx, req.(*SetProductBrandRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Products_RemoveProductBrand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetProductBrandRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).RemoveProductBrand(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/RemoveProductBrand",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).RemoveProductBrand(ctx, req.(*SetProductBrandRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Products_SetProductPurchase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetProductPurchaseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).SetProductPurchase(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/SetProductPurchase",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).SetProductPurchase(ctx, req.(*SetProductPurchaseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Products_GetProductPurchase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).GetProductPurchase(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/GetProductPurchase",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).GetProductPurchase(ctx, req.(*ProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Products_GetProductPurchases_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).GetProductPurchases(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/GetProductPurchases",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).GetProductPurchases(ctx, req.(*ProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Products_RemoveProductPurchase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).RemoveProductPurchase(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/RemoveProductPurchase",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).RemoveProductPurchase(ctx, req.(*DeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Products_ServiceDesc is the grpc.ServiceDesc for Products service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -242,6 +466,34 @@ var Products_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UnlinkToShop",
 			Handler:    _Products_UnlinkToShop_Handler,
+		},
+		{
+			MethodName: "UpdateProduct",
+			Handler:    _Products_UpdateProduct_Handler,
+		},
+		{
+			MethodName: "SetProductBrand",
+			Handler:    _Products_SetProductBrand_Handler,
+		},
+		{
+			MethodName: "RemoveProductBrand",
+			Handler:    _Products_RemoveProductBrand_Handler,
+		},
+		{
+			MethodName: "SetProductPurchase",
+			Handler:    _Products_SetProductPurchase_Handler,
+		},
+		{
+			MethodName: "GetProductPurchase",
+			Handler:    _Products_GetProductPurchase_Handler,
+		},
+		{
+			MethodName: "GetProductPurchases",
+			Handler:    _Products_GetProductPurchases_Handler,
+		},
+		{
+			MethodName: "RemoveProductPurchase",
+			Handler:    _Products_RemoveProductPurchase_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -8,9 +8,20 @@ option go_package = "github.com/ansanych/protocol";
 service Products {
     rpc GetProducts (SelectRequest) returns (ProductsReply) {}
     rpc GetProduct (ProductRequest) returns (Product) {}
+    
     rpc CreateFromShop (ProductLink) returns (BoolReply) {}
     rpc LinkToShop (ProductLink) returns (BoolReply) {}
     rpc UnlinkToShop (ProductLink) returns (BoolReply) {}
+    
+    rpc UpdateProduct (UpdateProductRequest) returns (BoolReply) {}
+    
+    rpc SetProductBrand (SetProductBrandRequest) returns (BoolReply) {}
+    rpc RemoveProductBrand (SetProductBrandRequest) returns (BoolReply) {}
+
+    rpc SetProductPurchase (SetProductPurchaseRequest) returns (BoolReply) {}
+    rpc GetProductPurchase (ProductRequest) returns (ProductPurchase) {}
+    rpc GetProductPurchases (ProductRequest) returns (PurchasesReply) {}
+    rpc RemoveProductPurchase (DeleteRequest) returns (BoolReply) {}
 }
 
 message ProductsGroup {
@@ -56,4 +67,35 @@ message ProductLink {
   string shopCode = 3;
   int64 shopProductID = 4;
   string name = 5;
+}
+
+message UpdateProductRequest {
+  Access auth = 1;
+  int64 ID = 2;
+  string title = 3;
+  string comment = 4;
+  bool active = 5;
+}
+
+message SetProductBrandRequest {
+  Access auth = 1;
+  int64 ID = 2;
+  int64 brandID = 3;
+}
+
+message SetProductPurchaseRequest {
+  Access auth = 1;
+  int64 ID = 2;
+  float purchase = 3;
+  string dateFrom = 4;
+}
+
+message ProductPurchase {
+  int64 purchaseID = 1;
+  float purchase = 2;
+  string dateFrom = 3;
+}
+
+message PurchasesReply {
+  repeated ProductPurchase purchases = 1;
 }
