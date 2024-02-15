@@ -36,6 +36,7 @@ message Product {
   string updated = 8;
   float purchase = 9;
   repeated ShopProductLinks shopProductLinks = 10;
+  string preview = 11;
 }
   
 message ProductsReply {
