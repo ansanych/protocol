@@ -22,6 +22,10 @@ service Products {
     rpc GetProductPurchase (ProductRequest) returns (ProductPurchase) {}
     rpc GetProductPurchases (ProductRequest) returns (PurchasesReply) {}
     rpc RemoveProductPurchase (DeleteRequest) returns (BoolReply) {}
+
+    rpc SearchProduct (SearchRequest) returns (ProductsReply) {}
+    rpc CheckLinkedShopProducts (CheckLinksReqest) returns (ProductsLinks) {}
+    rpc CheckLinkedShopProduct (CheckLinksReqest) returns (ProductLink) {}
 }
 
 message ProductsGroup {
@@ -67,6 +71,16 @@ message ProductLink {
   string shopCode = 3;
   int64 shopProductID = 4;
   string name = 5;
+}
+
+message ProductsLinks {
+  repeated ProductLink links = 1;
+}
+
+message CheckLinksReqest {
+  Access auth = 1;
+  repeated int64 shopProductsID = 2;
+  string shopCode = 3;
 }
 
 message UpdateProductRequest {

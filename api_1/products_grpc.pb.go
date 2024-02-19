@@ -34,6 +34,9 @@ type ProductsClient interface {
 	GetProductPurchase(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*ProductPurchase, error)
 	GetProductPurchases(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*PurchasesReply, error)
 	RemoveProductPurchase(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*BoolReply, error)
+	SearchProduct(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*ProductsReply, error)
+	CheckLinkedShopProducts(ctx context.Context, in *CheckLinksReqest, opts ...grpc.CallOption) (*ProductsLinks, error)
+	CheckLinkedShopProduct(ctx context.Context, in *CheckLinksReqest, opts ...grpc.CallOption) (*ProductLink, error)
 }
 
 type productsClient struct {
@@ -152,6 +155,33 @@ func (c *productsClient) RemoveProductPurchase(ctx context.Context, in *DeleteRe
 	return out, nil
 }
 
+func (c *productsClient) SearchProduct(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*ProductsReply, error) {
+	out := new(ProductsReply)
+	err := c.cc.Invoke(ctx, "/protocol.Products/SearchProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productsClient) CheckLinkedShopProducts(ctx context.Context, in *CheckLinksReqest, opts ...grpc.CallOption) (*ProductsLinks, error) {
+	out := new(ProductsLinks)
+	err := c.cc.Invoke(ctx, "/protocol.Products/CheckLinkedShopProducts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productsClient) CheckLinkedShopProduct(ctx context.Context, in *CheckLinksReqest, opts ...grpc.CallOption) (*ProductLink, error) {
+	out := new(ProductLink)
+	err := c.cc.Invoke(ctx, "/protocol.Products/CheckLinkedShopProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductsServer is the server API for Products service.
 // All implementations must embed UnimplementedProductsServer
 // for forward compatibility
@@ -168,6 +198,9 @@ type ProductsServer interface {
 	GetProductPurchase(context.Context, *ProductRequest) (*ProductPurchase, error)
 	GetProductPurchases(context.Context, *ProductRequest) (*PurchasesReply, error)
 	RemoveProductPurchase(context.Context, *DeleteRequest) (*BoolReply, error)
+	SearchProduct(context.Context, *SearchRequest) (*ProductsReply, error)
+	CheckLinkedShopProducts(context.Context, *CheckLinksReqest) (*ProductsLinks, error)
+	CheckLinkedShopProduct(context.Context, *CheckLinksReqest) (*ProductLink, error)
 	mustEmbedUnimplementedProductsServer()
 }
 
@@ -210,6 +243,15 @@ func (UnimplementedProductsServer) GetProductPurchases(context.Context, *Product
 }
 func (UnimplementedProductsServer) RemoveProductPurchase(context.Context, *DeleteRequest) (*BoolReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveProductPurchase not implemented")
+}
+func (UnimplementedProductsServer) SearchProduct(context.Context, *SearchRequest) (*ProductsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchProduct not implemented")
+}
+func (UnimplementedProductsServer) CheckLinkedShopProducts(context.Context, *CheckLinksReqest) (*ProductsLinks, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckLinkedShopProducts not implemented")
+}
+func (UnimplementedProductsServer) CheckLinkedShopProduct(context.Context, *CheckLinksReqest) (*ProductLink, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckLinkedShopProduct not implemented")
 }
 func (UnimplementedProductsServer) mustEmbedUnimplementedProductsServer() {}
 
@@ -440,6 +482,60 @@ func _Products_RemoveProductPurchase_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Products_SearchProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).SearchProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/SearchProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).SearchProduct(ctx, req.(*SearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Products_CheckLinkedShopProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckLinksReqest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).CheckLinkedShopProducts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/CheckLinkedShopProducts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).CheckLinkedShopProducts(ctx, req.(*CheckLinksReqest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Products_CheckLinkedShopProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckLinksReqest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).CheckLinkedShopProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/CheckLinkedShopProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).CheckLinkedShopProduct(ctx, req.(*CheckLinksReqest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Products_ServiceDesc is the grpc.ServiceDesc for Products service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -494,6 +590,18 @@ var Products_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveProductPurchase",
 			Handler:    _Products_RemoveProductPurchase_Handler,
+		},
+		{
+			MethodName: "SearchProduct",
+			Handler:    _Products_SearchProduct_Handler,
+		},
+		{
+			MethodName: "CheckLinkedShopProducts",
+			Handler:    _Products_CheckLinkedShopProducts_Handler,
+		},
+		{
+			MethodName: "CheckLinkedShopProduct",
+			Handler:    _Products_CheckLinkedShopProduct_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

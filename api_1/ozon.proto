@@ -12,6 +12,10 @@ service Ozon {
   rpc GetWidgetData (Access) returns (WidgetReply) {}
   rpc GetProductList (SelectRequest) returns (ShopProductList) {}
   rpc GetProduct (ShopProductRequest) returns (ShopProduct) {}
+
+  rpc SearchShopProduct (SearchShopProductRequest) returns (ShopProductList) {}
+  rpc GetUnsortedCount (Access) returns (ProductCount) {}
+  rpc GetUnsortedList (SelectRequest) returns (ShopProductList) {}
 }
 
 message OzonAuth {

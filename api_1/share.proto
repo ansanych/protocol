@@ -90,3 +90,14 @@ message ShopProductRequest {
   Access auth = 1;
   int64 ID = 2;
 }
+
+message SearchShopProductRequest {
+  Access auth = 1;
+  string title = 2;
+  string article = 3;
+}
+
+message SearchRequest {
+  Access auth = 1;
+  string search = 2;
+}
