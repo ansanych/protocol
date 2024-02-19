@@ -26,6 +26,8 @@ service Products {
     rpc SearchProduct (SearchRequest) returns (ProductsReply) {}
     rpc CheckLinkedShopProducts (CheckLinksReqest) returns (ProductsLinks) {}
     rpc CheckLinkedShopProduct (CheckLinksReqest) returns (ProductLink) {}
+    
+    rpc GetCompanyProductsID (ListIDRequest) returns (ListID) {} 
 }
 
 message ProductsGroup {
@@ -112,4 +114,13 @@ message ProductPurchase {
 
 message PurchasesReply {
   repeated ProductPurchase purchases = 1;
+}
+
+message ListIDRequest {
+  Access auth = 1;
+  string shopCode = 2;
+}
+
+message ListID {
+  repeated int64 shopProductID = 1;
 }

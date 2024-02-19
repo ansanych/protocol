@@ -37,6 +37,7 @@ type ProductsClient interface {
 	SearchProduct(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*ProductsReply, error)
 	CheckLinkedShopProducts(ctx context.Context, in *CheckLinksReqest, opts ...grpc.CallOption) (*ProductsLinks, error)
 	CheckLinkedShopProduct(ctx context.Context, in *CheckLinksReqest, opts ...grpc.CallOption) (*ProductLink, error)
+	GetCompanyProductsID(ctx context.Context, in *ListIDRequest, opts ...grpc.CallOption) (*ListID, error)
 }
 
 type productsClient struct {
@@ -182,6 +183,15 @@ func (c *productsClient) CheckLinkedShopProduct(ctx context.Context, in *CheckLi
 	return out, nil
 }
 
+func (c *productsClient) GetCompanyProductsID(ctx context.Context, in *ListIDRequest, opts ...grpc.CallOption) (*ListID, error) {
+	out := new(ListID)
+	err := c.cc.Invoke(ctx, "/protocol.Products/GetCompanyProductsID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductsServer is the server API for Products service.
 // All implementations must embed UnimplementedProductsServer
 // for forward compatibility
@@ -201,6 +211,7 @@ type ProductsServer interface {
 	SearchProduct(context.Context, *SearchRequest) (*ProductsReply, error)
 	CheckLinkedShopProducts(context.Context, *CheckLinksReqest) (*ProductsLinks, error)
 	CheckLinkedShopProduct(context.Context, *CheckLinksReqest) (*ProductLink, error)
+	GetCompanyProductsID(context.Context, *ListIDRequest) (*ListID, error)
 	mustEmbedUnimplementedProductsServer()
 }
 
@@ -252,6 +263,9 @@ func (UnimplementedProductsServer) CheckLinkedShopProducts(context.Context, *Che
 }
 func (UnimplementedProductsServer) CheckLinkedShopProduct(context.Context, *CheckLinksReqest) (*ProductLink, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckLinkedShopProduct not implemented")
+}
+func (UnimplementedProductsServer) GetCompanyProductsID(context.Context, *ListIDRequest) (*ListID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCompanyProductsID not implemented")
 }
 func (UnimplementedProductsServer) mustEmbedUnimplementedProductsServer() {}
 
@@ -536,6 +550,24 @@ func _Products_CheckLinkedShopProduct_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Products_GetCompanyProductsID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductsServer).GetCompanyProductsID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protocol.Products/GetCompanyProductsID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductsServer).GetCompanyProductsID(ctx, req.(*ListIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Products_ServiceDesc is the grpc.ServiceDesc for Products service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -602,6 +634,10 @@ var Products_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckLinkedShopProduct",
 			Handler:    _Products_CheckLinkedShopProduct_Handler,
+		},
+		{
+			MethodName: "GetCompanyProductsID",
+			Handler:    _Products_GetCompanyProductsID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
