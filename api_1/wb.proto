@@ -1,0 +1,29 @@
+syntax = "proto3";
+import "share.proto";
+
+package protocol;
+
+option go_package = "github.com/ansanych/protocol";
+
+service WB {
+  rpc SetWBAuth (SetWBAuthRequest) returns (BoolReply) {}
+  rpc GetWBAuth (Access) returns (WBAuth) {}
+  rpc ErrorWBAuth (Access) returns (BoolReply) {}
+  rpc GetWidgetDataWB (Access) returns (WidgetReply) {}
+  rpc GetProductListWB (SelectRequest) returns (ShopProductList) {}
+  rpc GetProductWB (ShopProductRequest) returns (ShopProduct) {}
+
+  rpc SearchShopProductWB (SearchShopProductRequest) returns (ShopProductList) {}
+  rpc GetUnsortedCountWB (Access) returns (ProductCount) {}
+  rpc GetUnsortedListWB (SelectRequest) returns (ShopProductList) {}
+}
+
+message WBAuth {
+  string token = 1;
+  bool error = 2;
+}
+
+message SetWBAuthRequest {
+  Access auth = 1;
+  WBAuth WBAuth = 2;
+}
